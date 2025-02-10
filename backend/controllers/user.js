@@ -1,0 +1,80 @@
+import bcrypt from "bcryptjs";
+import User from "../models/User.js";
+import City from "../models/City.js";
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.getAll();
+    return res.status(200).json({ users });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const getOneUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.getById(id);
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const createUser = async (req, res) => {
+  try {
+    const { name, email, password, countryName, cityName, postCode } = req.body;
+
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !countryName ||
+      !cityName ||
+      !postCode
+    ) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    console.log("Checking if user exists:", email);
+    const existingUser = await User.getByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
+    }
+
+    console.log("Checking if city exists:", cityName, countryName, postCode);
+    let city = await City.getByName(countryName, cityName, postCode);
+    if (!city) {
+      console.log("City not found, creating new city...");
+      city = await City.create({
+        country: countryName,
+        name: cityName,
+        post_code: postCode,
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Password hashed successfully.");
+
+    const newUser = {
+      name,
+      email,
+      password: hashedPassword,
+      is_admin: false,
+      city_id: city.id,
+      created_at: new Date(),
+    };
+
+    console.log("Creating new user...");
+    const user = await User.create(newUser);
+    return res
+      .status(201)
+      .json({ message: "User registered successfully", user });
+  } catch (err) {
+    console.error("Error during user registration:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const userController = { getAllUsers, getOneUser, createUser };
+export default userController;
