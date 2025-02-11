@@ -10,9 +10,9 @@ export const swaggerOptions = {
     servers: [
       {
         url: "http://localhost:3000",
-        description: "Serveur de dev",
+        description: "Local server",
       },
     ],
   },
-  apis: ["./routes/*.js"], // Fichiers contenant les commentaires JSDoc
+  apis: ["./routes/*.js"],
 };
