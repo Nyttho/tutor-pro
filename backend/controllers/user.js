@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import City from "../models/City.js";
+import { emailValidator, postCodeCityValidator } from "../utils/validations.js";
 
 const getAllUsers = async (req, res) => {
   try {
@@ -36,13 +37,22 @@ const createUser = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    console.log("Checking if user exists:", email);
+    const isValidEmail = emailValidator(email);
+
+    if (!isValidEmail) {
+      return res.status(400).json({ error: "email must be valid" });
+    }
+
+    const isValidCp = await postCodeCityValidator(postCode, cityName);
+    if (!isValidCp) {
+      return res.status(400).json({ error: "city does not match code post" });
+    }
+
     const existingUser = await User.getByEmail(email);
     if (existingUser) {
       return res.status(409).json({ error: "User already exists" });
     }
 
-    console.log("Checking if city exists:", cityName, countryName, postCode);
     let city = await City.getByName(countryName, cityName, postCode);
     if (!city) {
       console.log("City not found, creating new city...");
@@ -65,7 +75,6 @@ const createUser = async (req, res) => {
       created_at: new Date(),
     };
 
-    console.log("Creating new user...");
     const user = await User.create(newUser);
     return res
       .status(201)
