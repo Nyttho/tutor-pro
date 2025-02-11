@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
 
     const isValidCp = await postCodeCityValidator(postCode, cityName);
     if (!isValidCp) {
-      return res.status(400).json({ error: "city does not match code post" });
+      return res.status(422).json({ error: "city does not match code post" });
     }
 
     const existingUser = await User.getByEmail(email);

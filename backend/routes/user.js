@@ -102,6 +102,16 @@ const userRouter = Router();
  *                 error:
  *                   type: string
  *                   example: User already exists
+ *       422:
+ *         description: Unprocessable Entity - City does not match postal code
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: City does not match postal code
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -113,6 +123,9 @@ const userRouter = Router();
  *                   type: string
  *                   example: Internal server error
  */
+const createUser = async (req, res) => {
+  // Votre implémentation ici
+};
 
 userRouter.post("/", userController.createUser);
 
