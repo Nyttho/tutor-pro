@@ -4,6 +4,7 @@ import userRouter from "./routes/user.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { swaggerOptions } from "./config/swaggerDef.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
 
 app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
