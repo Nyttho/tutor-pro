@@ -5,6 +5,107 @@ const userRouter = Router();
 
 /**
  * @swagger
+ * /api/users:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get all users
+ *     description: Retrieves the list of all users. The authentication token is expected in the cookies under the name 'token'.
+ *     responses:
+ *       200:
+ *         description: Users successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 users:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: Unique identifier of the user.
+ *                       name:
+ *                         type: string
+ *                         description: Full name of the user.
+ *                       email:
+ *                         type: string
+ *                         format: email
+ *                         description: Email address of the user.
+ *                       is_admin:
+ *                         type: boolean
+ *                         description: Indicates whether the user is an administrator.
+ *                       city_id:
+ *                         type: integer
+ *                         description: Identifier of the user's city.
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Timestamp of when the user was created.
+ *       401:
+ *         description: Unauthorized. Missing or invalid authentication token.
+ *       500:
+ *         description: Internal server error.
+ */
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Retrieve a specific user
+ *     description: Retrieves a specific user based on their ID. The authentication token is expected in the cookies under the name 'token'.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User successfully found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: Unique identifier of the user.
+ *                     name:
+ *                       type: string
+ *                       description: Full name of the user.
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       description: Email address of the user.
+ *                     is_admin:
+ *                       type: boolean
+ *                       description: Indicates whether the user is an administrator.
+ *                     city_id:
+ *                       type: integer
+ *                       description: Identifier of the user's city.
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Timestamp of when the user was created.
+ *       400:
+ *         description: Invalid user ID format.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+
+/**
+ * @swagger
  * /api/users/:
  *   post:
  *     summary: Create a new user
@@ -123,10 +224,9 @@ const userRouter = Router();
  *                   type: string
  *                   example: Internal server error
  */
-const createUser = async (req, res) => {
-  // Votre implémentation ici
-};
 
+userRouter.get("/", userController.getAllUsers);
+userRouter.get("/:id", userController.getOneUser);
 userRouter.post("/", userController.createUser);
 
 export default userRouter;

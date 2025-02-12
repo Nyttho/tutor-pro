@@ -6,7 +6,9 @@ import { emailValidator, postCodeCityValidator } from "../utils/validations.js";
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.getAll();
-    return res.status(200).json({ users });
+    const cleanedUser = users.map(({ password, ...rest }) => rest);
+
+    return res.status(200).json({ users: cleanedUser });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -16,7 +18,8 @@ const getOneUser = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await User.getById(id);
-    return res.status(200).json({ user });
+    const { password, ...cleanedUser } = user;
+    return res.status(200).json({ user: cleanedUser });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
