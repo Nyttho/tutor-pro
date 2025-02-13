@@ -4,4 +4,6 @@ import isAuth from "../middlewares/isAuth.js";
 
 const categoryRouter = Router();
 
+categoryRouter.get("/", categoryController.getAllCategories);
+
 export default categoryRouter;

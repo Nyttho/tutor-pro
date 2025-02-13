@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/categories", categoryRouter);
+app.use("/api/category", categoryRouter);
 
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
