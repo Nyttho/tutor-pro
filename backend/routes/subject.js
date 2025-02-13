@@ -5,4 +5,6 @@ import isAdmin from "../middlewares/isAdmin.js";
 
 const subjectRouter = Router();
 
+subjectRouter.get("/", subjectController.getAllSubjects)
+
 export default subjectRouter;
