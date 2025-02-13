@@ -5,7 +5,8 @@ import isAdmin from "../middlewares/isAdmin.js";
 
 const subjectRouter = Router();
 
-subjectRouter.get("/", subjectController.getAllSubjects)
-subjectRouter.get("/:id", subjectController.getAllSubjects)
+subjectRouter.get("/", subjectController.getAllSubjects);
+subjectRouter.get("/:id", subjectController.getAllSubjects);
+subjectRouter.post("/", isAuth, isAdmin, subjectController.createSubject);
 
 export default subjectRouter;
