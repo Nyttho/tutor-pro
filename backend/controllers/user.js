@@ -88,6 +88,44 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const tokenId = req.user.id;
+    const isAdmin = req.user.admin;
+
+    const { is_admin, ...updateFields } = req.body;
+
+    //Verify if user in database
+    const existingUser = await User.getById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    //Verify if user is trying to update himself, or if he is admin
+    if (!isAdmin && userId !== tokenId) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to update this user" });
+    }
+
+    //Verify if user is admin
+    if (!isAdmin && is_admin !== undefined) {
+      return res.status(403).json({ message: "You can't change your role" });
+    }
+
+    const fieldsToUpdate = isAdmin ? req.body : updateFields;
+
+    const updatedUser = await User.update(userId, fieldsToUpdate);
+
+    return res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -108,11 +146,10 @@ const deleteUser = async (req, res) => {
     await User.delete(id);
 
     return res.status(200).json({ message: "user deleted successfully" });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-const userController = { getAllUsers, getOneUser, createUser, deleteUser };
+const userController = { getAllUsers, getOneUser, createUser,updateUser, deleteUser };
 export default userController;
