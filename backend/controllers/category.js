@@ -39,8 +39,6 @@ const createCategory = async (req, res) => {
 
     const isCategoryExists = await Category.getByName(name);
 
-    console.log(isCategoryExists)
-
     if (isCategoryExists) {
       return res.status(409).json({ error: "Category already exists" });
     }
@@ -55,6 +53,42 @@ const createCategory = async (req, res) => {
   }
 };
 
-const categoryController = { getAllCategories, getOneCategory, createCategory };
+const updateCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const { name } = req.body;
+
+    const isFound = Category.getById(categoryId);
+
+    if (!isFound) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const isCategoryAlreadyExists = await Category.getByName(name);
+
+    if (isCategoryAlreadyExists) {
+      return res.status(400).json({ error: "Category already exists" });
+    }
+
+    const category = await Category.update(categoryId, { name });
+
+    return res
+      .status(200)
+      .json({ message: "Category updated successfully", category });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const categoryController = {
+  getAllCategories,
+  getOneCategory,
+  createCategory,
+  updateCategory,
+};
 
 export default categoryController;
