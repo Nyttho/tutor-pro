@@ -9,5 +9,6 @@ categoryRouter.get("/", categoryController.getAllCategories);
 categoryRouter.get("/:id", categoryController.getOneCategory);
 categoryRouter.post("/", isAuth, isAdmin, categoryController.createCategory);
 categoryRouter.put("/:id", isAuth, isAdmin, categoryController.updateCategory);
+categoryRouter.delete("/:id", isAuth, isAdmin, categoryController.deleteCategory);
 
 export default categoryRouter;

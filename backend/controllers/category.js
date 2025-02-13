@@ -84,11 +84,31 @@ const updateCategory = async (req, res) => {
   }
 };
 
+const deleteCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+
+    const isFound = Category.getById(categoryId);
+
+    if (!isFound) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    await Category.delete(categoryId)
+
+    return res.status(200).json({message:"Category deleted successfully"})
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 const categoryController = {
   getAllCategories,
   getOneCategory,
   createCategory,
   updateCategory,
+  deleteCategory
 };
 
 export default categoryController;
