@@ -59,7 +59,7 @@ const authRouter = Router();
  *                       example: false
  *                     city_id:
  *                       type: integer
- *                       example: 1
+ *                       example: 1swaggerdoc
  *                     created_at:
  *                       type: string
  *                       format: date-time
