@@ -46,17 +46,17 @@ const createUser = async (req, res) => {
       return res.status(400).json({ error: "email must be valid" });
     }
 
-    // const isValidCp = await postCodeCityValidator(postCode, cityName);
-    // if (!isValidCp) {
-    //   return res.status(422).json({ error: "city does not match code post" });
-    // }
+    const isValidCp = await postCodeCityValidator(postCode, cityName);
+    if (!isValidCp) {
+      return res.status(422).json({ error: "city does not match code post" });
+    }
 
     const existingUser = await User.getByEmail(email);
     if (existingUser) {
       return res.status(409).json({ error: "User already exists" });
     }
 
-    let city = await City.getByName(countryName, cityName, postCode);
+    let city = await City.getByPostCode(countryName, postCode);
     if (!city) {
       console.log("City not found, creating new city...");
       city = await City.create({
