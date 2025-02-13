@@ -39,6 +39,20 @@ const auth = async (req, res) => {
   }
 };
 
-const authController = { auth };
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    });
+
+    res.status(200).json({message: "Successfully logged out"})
+  } catch (err) {
+    res.status(500).json({error: err.message})
+};
+}
+
+const authController = { auth, logout };
 
 export default authController;
