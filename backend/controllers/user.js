@@ -46,10 +46,10 @@ const createUser = async (req, res) => {
       return res.status(400).json({ error: "email must be valid" });
     }
 
-    const isValidCp = await postCodeCityValidator(postCode, cityName);
-    if (!isValidCp) {
-      return res.status(422).json({ error: "city does not match code post" });
-    }
+    // const isValidCp = await postCodeCityValidator(postCode, cityName);
+    // if (!isValidCp) {
+    //   return res.status(422).json({ error: "city does not match code post" });
+    // }
 
     const existingUser = await User.getByEmail(email);
     if (existingUser) {
@@ -84,9 +84,35 @@ const createUser = async (req, res) => {
       .json({ message: "User registered successfully", user });
   } catch (err) {
     console.error("Error during user registration:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: err.message });
   }
 };
 
-const userController = { getAllUsers, getOneUser, createUser };
+const deleteUser = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const tokenId = req.user.id;
+
+    const existingUser = await User.getById(id);
+
+    if (!existingUser) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+
+    if (id !== tokenId) {
+      return res
+        .status(403)
+        .json({ error: "You're not authorized to delete this user" });
+    }
+
+    await User.delete(id);
+
+    return res.status(200).json({ message: "user deleted successfully" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const userController = { getAllUsers, getOneUser, createUser, deleteUser };
 export default userController;
