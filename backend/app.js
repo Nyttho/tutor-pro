@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import cookieParser from "cookie-parser";
 import { swaggerOptions } from "./config/swaggerDef.js";
 import authRouter from "./routes/auth.js";
+import categoryRouter from "./routes/category.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/categories", categoryRouter);
 
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
