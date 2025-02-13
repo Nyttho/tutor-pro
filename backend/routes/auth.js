@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authController from "../controllers/auth.js";
+import isAuth from "../middlewares/isAuth.js"
 
 const authRouter = Router();
 /**
@@ -59,7 +60,7 @@ const authRouter = Router();
  *                       example: false
  *                     city_id:
  *                       type: integer
- *                       example: 1
+ *                       example: 1swaggerdoc
  *                     created_at:
  *                       type: string
  *                       format: date-time
@@ -86,6 +87,41 @@ const authRouter = Router();
  *                   example: "Internal server error"
  */
 
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Log out the user
+ *     description: Clears the authentication cookie to log the user out.
+ *     tags:
+ *       - Authentication
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Successfully logged out
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+
 authRouter.post("/login", authController.auth);
+authRouter.post("/logout",isAuth, authController.logout )
 
 export default authRouter;

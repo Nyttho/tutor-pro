@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userController from "../controllers/user.js";
+import isAuth from "../middlewares/isAuth.js";
 
 const userRouter = Router();
 
@@ -225,8 +226,185 @@ const userRouter = Router();
  *                   example: Internal server error
  */
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Update a user
+ *     description: Update a user's information. Only the user himself or an admin can update user details.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to update
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: New name of the user
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: New email of the user
+ *                 example: johndoe@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: New password of the user
+ *                 example: MyStrongPass123!
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User updated successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ *                     is_admin:
+ *                       type: boolean
+ *                       example: false
+ *                     city_id:
+ *                       type: integer
+ *                       example: 101
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                       example: 2025-02-11T17:55:24Z
+ *       400:
+ *         description: Invalid request data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid request data
+ *       403:
+ *         description: Unauthorized action (user is not allowed to update this user)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: You are not authorized to update this user
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user
+ *     description: Delete a user account. A user can only delete their own account.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to delete
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: user deleted successfully
+ *       400:
+ *         description: Invalid request (user does not exist)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid request
+ *       403:
+ *         description: Unauthorized action (user is not allowed to delete another user)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: You're not authorized to delete this user
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+
+
 userRouter.get("/", userController.getAllUsers);
 userRouter.get("/:id", userController.getOneUser);
 userRouter.post("/", userController.createUser);
+userRouter.put("/:id", isAuth, userController.updateUser)
+userRouter.delete("/:id", isAuth, userController.deleteUser)
 
 export default userRouter;
