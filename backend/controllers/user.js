@@ -118,9 +118,11 @@ const updateUser = async (req, res) => {
 
     const updatedUser = await User.update(userId, fieldsToUpdate);
 
+    const {password, ...user} = updatedUser
+
     return res
       .status(200)
-      .json({ message: "User updated successfully", user: updatedUser });
+      .json({ message: "User updated successfully", user });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
