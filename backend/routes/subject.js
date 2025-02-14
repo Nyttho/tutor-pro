@@ -225,6 +225,57 @@ const subjectRouter = Router();
  *                   example: Internal server error
  */
 
+/**
+ * @swagger
+ * /subjects/{id}:
+ *   delete:
+ *     summary: Delete a subject by ID
+ *     description: Deletes a subject from the database if it exists. Only accessible by an authenticated user with admin privileges.
+ *     tags:
+ *       - Subjects
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the subject to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Subject deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Subject deleted successfully"
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Category not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while deleting the subject"
+ */
+
+
 subjectRouter.get("/", subjectController.getAllSubjects);
 subjectRouter.get("/:id", subjectController.getOneSubject);
 subjectRouter.post("/", isAuth, isAdmin, subjectController.createSubject);

@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
-import swaggerJSDoc from "swagger-jsdoc";
 import cookieParser from "cookie-parser";
 //--------------swagger---------------------
 import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config/swaggerDef.js";
 //--------------routers--------------------
 import userRouter from "./routes/user.js";
