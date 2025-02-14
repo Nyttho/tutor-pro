@@ -214,6 +214,176 @@ const subjectRouter = Router();
 
 /**
  * @swagger
+ * /subjects:
+ *   post:
+ *     summary: Create a new subject
+ *     description: Creates a new subject in the database. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
+ *     tags:
+ *       - Subjects
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - category
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Mathematics"
+ *               category:
+ *                 type: string
+ *                 example: "Science"
+ *     responses:
+ *       201:
+ *         description: Subject successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Subject Successfully Created"
+ *                 subject:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "12345"
+ *                     name:
+ *                       type: string
+ *                       example: "Mathematics"
+ *                     category_id:
+ *                       type: string
+ *                       example: "67890"
+ *                     created_by:
+ *                       type: string
+ *                       example: "54321"
+ *       400:
+ *         description: Missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "All fields are required"
+ *       409:
+ *         description: Subject already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Subject already exists"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while creating the subject"
+ *
+ * /subjects/{id}:
+ *   put:
+ *     summary: Update an existing subject
+ *     description: Updates the details of an existing subject by ID. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
+ *     tags:
+ *       - Subjects
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the subject to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - category
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Physics"
+ *               category:
+ *                 type: string
+ *                 example: "Science"
+ *     responses:
+ *       200:
+ *         description: Subject updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Subject updated successfully"
+ *                 subject:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "12345"
+ *                     name:
+ *                       type: string
+ *                       example: "Physics"
+ *                     category_id:
+ *                       type: string
+ *                       example: "67890"
+ *       400:
+ *         description: Missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "All fields are required"
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Subject not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while updating the subject"
+ */
+
+
+/**
+ * @swagger
  * /subjects/{id}:
  *   delete:
  *     summary: Delete a subject by ID
