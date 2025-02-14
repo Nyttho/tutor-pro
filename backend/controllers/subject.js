@@ -39,10 +39,11 @@ const createSubject = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const existingCategory = await Category.getByName(category);
+    let categoryDb = await Category.getByName(category);
 
-    if (!existingCategory) {
-      return res.status(400).json({ error: "Category does not exists" });
+    //create category if it doesn't exist yet
+    if (!categoryDb) {
+      categoryDb = await Category.create({ name: category })
     }
 
     const isSubjectAlreadyExists = await Subject.getByName(name);
@@ -53,7 +54,7 @@ const createSubject = async (req, res) => {
 
     const subjectFields = {
       name,
-      category_id: existingCategory.id,
+      category_id: categoryDb.id,
       created_by: user.id,
     };
 
@@ -80,14 +81,11 @@ const updateSubject = async (req, res) => {
     if (!subject) {
       return res.status(404).json({ error: "Subject not found" });
     }
-    
-    let categoryDb = await Category.getByName(category);
-    console.log("coucou");
-    if (!categoryDb) {
-      categoryDb = await Category.create({name: category});
-    }
 
-    console.log(categoryDb);
+    let categoryDb = await Category.getByName(category);
+    if (!categoryDb) {
+      categoryDb = await Category.create({ name: category });
+    }
 
     const updatedSubject = await Subject.update(subjectId, {
       name,
@@ -100,7 +98,10 @@ const updateSubject = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Subject updated successfully", subject: updatedSubject });
+      .json({
+        message: "Subject updated successfully",
+        subject: updatedSubject,
+      });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
