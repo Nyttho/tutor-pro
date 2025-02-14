@@ -14,6 +14,85 @@ const studentRouter = Router();
 /**
  * @swagger
  * /:
+ *   get:
+ *     summary: Retrieve all students of the authenticated user
+ *     description: This endpoint retrieves all students created by the authenticated user. It will also check if any student has been inactive for more than 6 months based on the last course they attended. If so, the student will be marked as inactive.
+ *     tags: [Student]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of students retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 students:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: Unique identifier for the student
+ *                       name:
+ *                         type: string
+ *                         description: First name of the student
+ *                       surname:
+ *                         type: string
+ *                         description: Surname of the student
+ *                       address:
+ *                         type: string
+ *                         description: Address of the student
+ *                       city_id:
+ *                         type: integer
+ *                         description: ID of the city
+ *                       is_active:
+ *                         type: boolean
+ *                         description: Whether the student is active or not
+ *                       created_by:
+ *                         type: integer
+ *                         description: ID of the user who created the student
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Date and time the student was created
+ *                       email:
+ *                         type: string
+ *                         description: Email of the student
+ *                       tel:
+ *                         type: string
+ *                         description: Phone number of the student
+ *                       age:
+ *                         type: integer
+ *                         description: Age of the student
+ *       404:
+ *         description: No students found for the authenticated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Students not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An unexpected error occurred."
+ */
+
+
+/**
+ * @swagger
+ * /:
  *   post:
  *     summary: Create a new student
  *     description: This endpoint creates a new student in the database.
