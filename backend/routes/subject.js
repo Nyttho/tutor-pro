@@ -133,29 +133,30 @@ const subjectRouter = Router();
  * /subjects:
  *   post:
  *     summary: Create a new subject
- *     description: Create a new subject and assign it to a category. Only accessible by an authenticated user with admin privileges.
+ *     description: Creates a new subject in the database. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
  *     tags:
  *       - Subjects
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - category
  *             properties:
  *               name:
  *                 type: string
- *                 description: The name of the subject
- *                 example: Irregular Verbs
+ *                 example: "Mathematics"
  *               category:
  *                 type: string
- *                 description: The name of the category to assign the subject to
- *                 example: English
+ *                 example: "Science"
  *     responses:
  *       201:
- *         description: Subject created successfully
+ *         description: Subject successfully created
  *         content:
  *           application/json:
  *             schema:
@@ -163,28 +164,24 @@ const subjectRouter = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Subject Successfully Created
+ *                   example: "Subject Successfully Created"
  *                 subject:
  *                   type: object
  *                   properties:
  *                     id:
- *                       type: integer
- *                       example: 1
+ *                       type: string
+ *                       example: "12345"
  *                     name:
  *                       type: string
- *                       example: Irregular Verbs
+ *                       example: "Mathematics"
  *                     category_id:
- *                       type: integer
- *                       example: 2
- *                     created_at:
  *                       type: string
- *                       format: date-time
- *                       example: 2025-02-13T14:26:58.612Z
+ *                       example: "67890"
  *                     created_by:
- *                       type: integer
- *                       example: 8
+ *                       type: string
+ *                       example: "54321"
  *       400:
- *         description: Missing fields or invalid category
+ *         description: Missing required fields
  *         content:
  *           application/json:
  *             schema:
@@ -192,7 +189,7 @@ const subjectRouter = Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   example: All fields are required or Category does not exists
+ *                   example: "All fields are required"
  *       409:
  *         description: Subject already exists
  *         content:
@@ -202,17 +199,7 @@ const subjectRouter = Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Subject already exists
- *       403:
- *         description: Forbidden access if not an admin
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Access denied
+ *                   example: "Subject already exists"
  *       500:
  *         description: Internal server error
  *         content:
@@ -222,7 +209,7 @@ const subjectRouter = Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Internal server error
+ *                   example: "An error occurred while creating the subject"
  */
 
 /**
