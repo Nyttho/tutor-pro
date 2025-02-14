@@ -4,7 +4,6 @@ import isAuth from "../middlewares/isAuth.js";
 
 const studentRouter = Router();
 
-
 /**
  * @swagger
  * /api/student:
@@ -82,7 +81,6 @@ const studentRouter = Router();
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-
 
 /**
  * @swagger
@@ -173,8 +171,6 @@ const studentRouter = Router();
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-
-
 
 /**
  * @swagger
@@ -307,9 +303,9 @@ const studentRouter = Router();
  *                   example: "An unexpected error occurred."
  */
 
-
 studentRouter.get("/", isAuth, studentController.getAllStudents);
 studentRouter.get("/:id", isAuth, studentController.getOneStudent);
 studentRouter.post("/", isAuth, studentController.createStudent);
+studentRouter.delete("/:id", isAuth, studentController.deleteStudent);
 
 export default studentRouter;

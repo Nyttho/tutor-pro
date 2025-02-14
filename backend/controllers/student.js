@@ -8,7 +8,7 @@ import {
 //ajouter un vérificateur lié aux cours, si le dernier cours a eu lieu il y'a plus de 6 mois (par exemple passer l'étudiant en mode inactif)
 const getAllStudents = async (req, res) => {
   try {
-    const user = req.user;
+    const user = parseInt(req.user);
 
     const students = (await Student.getAll()).filter(
       (s) => s.created_by === user.id
@@ -25,30 +25,31 @@ const getAllStudents = async (req, res) => {
 };
 
 const getOneStudent = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const studentId = req.params.id;
+  try {
+    const userId = parseInt(req.user.id);
+    const studentId = parseInt(req.params.id);
 
-        const student = await Student.getById(studentId);
+    const student = await Student.getById(studentId);
 
-        if(!student) {
-            return res.status(404).json({error: "Student not found"})
-        }
-
-        if(student.created_by !== userId) {
-            return res.status(403).json({error: "You are not allowed to access this student"})
-        }
-
-        return res.status(200).json(student)
-
-    } catch (err) {
-        return res.status(500).json({error: err.message})
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
     }
-}
+
+    if (student.created_by !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not allowed to access this student" });
+    }
+
+    return res.status(200).json(student);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
 
 const createStudent = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = parseInt(req.user.id);
     const { name, surname, address, city, postCode, country, email, tel, age } =
       req.body;
 
@@ -107,6 +108,38 @@ const createStudent = async (req, res) => {
   }
 };
 
-const studentController = { getAllStudents, getOneStudent, createStudent };
+const deleteStudent = async (req, res) => {
+    try {
+      const userId = parseInt(req.user.id); 
+      const studentId = parseInt(req.params.id);
+  
+      const student = await Student.getById(studentId);
+  
+      if (!student) {
+        return res.status(404).json({ error: "Student not found" });
+      }
+  
+      if (parseInt(student.created_by) !== userId) {
+        return res.status(403).json({ error: "You are not allowed to delete this student" });
+      }
+  
+      if (student.is_deleted) {
+        return res.status(400).json({ error: "Student is already deleted" });
+      }
+  
+      const deleteResult = await Student.delete(studentId);
+  
+      if (!deleteResult) {
+        return res.status(500).json({ error: "Failed to delete student" });
+      }
+  
+      return res.status(200).json({ message: "Student deleted successfully" });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  };
+  
+
+const studentController = { getAllStudents, getOneStudent, createStudent, deleteStudent };
 
 export default studentController;

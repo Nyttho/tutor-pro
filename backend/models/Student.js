@@ -17,6 +17,18 @@ class Student extends Crud {
       return { error: "Error while checking for student" };
     }
   }
+  async delete(studentId) {
+    try {
+      const result = await pool.query(
+        "UPDATE students SET is_deleted = TRUE WHERE id = $1 RETURNING *",
+        [studentId]
+      );
+
+      return result.rowCount > 0; // Renvoie `true` si au moins une ligne a été mise à jour, sinon `false`
+    } catch (err) {
+      throw new Error("Error while deleting student");
+    }
+  }
 }
 
 export default new Student();
