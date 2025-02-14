@@ -24,6 +24,28 @@ const getAllStudents = async (req, res) => {
   }
 };
 
+const getOneStudent = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const studentId = req.params.id;
+
+        const student = await Student.getById(studentId);
+
+        if(!student) {
+            return res.status(404).json({error: "Student not found"})
+        }
+
+        if(student.created_by !== userId) {
+            return res.status(403).json({error: "You are not allowed to access this student"})
+        }
+
+        return res.status(200).json(student)
+
+    } catch (err) {
+        return res.status(500).json({error: err.message})
+    }
+}
+
 const createStudent = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -85,6 +107,6 @@ const createStudent = async (req, res) => {
   }
 };
 
-const studentController = { getAllStudents, createStudent };
+const studentController = { getAllStudents, getOneStudent, createStudent };
 
 export default studentController;

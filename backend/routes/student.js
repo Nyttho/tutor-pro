@@ -223,6 +223,7 @@ const studentRouter = Router();
 
 
 studentRouter.get("/", isAuth, studentController.getAllStudents);
+studentRouter.get("/:id", isAuth, studentController.getOneStudent);
 studentRouter.post("/", isAuth, studentController.createStudent);
 
 export default studentRouter;
