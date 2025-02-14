@@ -5,6 +5,25 @@ import {
   validateFrenchPhoneNumber,
 } from "../utils/validations.js";
 
+//ajouter un vérificateur lié aux cours, si le dernier cours a eu lieu il y'a plus de 6 mois (par exemple passer l'étudiant en mode inactif)
+const getAllStudents = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const students = (await Student.getAll()).filter(
+      (s) => s.created_by === user.id
+    );
+
+    if (students.length === 0) {
+      return res.status(404).json({ error: "Students not found" });
+    }
+
+    res.status(200).json({ students });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const createStudent = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -66,6 +85,6 @@ const createStudent = async (req, res) => {
   }
 };
 
-const studentController = { createStudent };
+const studentController = { getAllStudents, createStudent };
 
 export default studentController;

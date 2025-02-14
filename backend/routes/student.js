@@ -143,6 +143,7 @@ const studentRouter = Router();
  */
 
 
+studentRouter.get("/", isAuth, studentController.getAllStudents);
 studentRouter.post("/", isAuth, studentController.createStudent);
 
 export default studentRouter;
