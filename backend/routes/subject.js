@@ -275,10 +275,10 @@ const subjectRouter = Router();
  *                   example: "An error occurred while deleting the subject"
  */
 
-
 subjectRouter.get("/", subjectController.getAllSubjects);
 subjectRouter.get("/:id", subjectController.getOneSubject);
 subjectRouter.post("/", isAuth, isAdmin, subjectController.createSubject);
+subjectRouter.put("/:id", isAuth, isAdmin, subjectController.updateSubject);
 subjectRouter.delete("/:id", isAuth, isAdmin, subjectController.deleteSubject);
 
 export default subjectRouter;
