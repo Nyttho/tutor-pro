@@ -7,7 +7,7 @@ const subjectRouter = Router();
 
 /**
  * @swagger
- * /subjects:
+ * /api/subjects:
  *   get:
  *     summary: Get all subjects
  *     description: Retrieve a list of all subjects.
@@ -66,7 +66,7 @@ const subjectRouter = Router();
 
 /**
  * @swagger
- * /subjects/{id}:
+ * /api/subjects/{id}:
  *   get:
  *     summary: Get a specific subject
  *     description: Retrieve details of a subject by its ID.
@@ -130,7 +130,7 @@ const subjectRouter = Router();
 
 /**
  * @swagger
- * /subjects:
+ * /api/subjects:
  *   post:
  *     summary: Create a new subject
  *     description: Creates a new subject in the database. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
@@ -214,7 +214,7 @@ const subjectRouter = Router();
 
 /**
  * @swagger
- * /subjects:
+ * /api/subjects:
  *   post:
  *     summary: Create a new subject
  *     description: Creates a new subject in the database. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
@@ -295,7 +295,11 @@ const subjectRouter = Router();
  *                   type: string
  *                   example: "An error occurred while creating the subject"
  *
- * /subjects/{id}:
+ */
+
+/**
+ * @swagger
+ * /api/subjects/{id}:
  *   put:
  *     summary: Update an existing subject
  *     description: Updates the details of an existing subject by ID. If the specified category does not exist, it will be created automatically. Only accessible to authenticated admins.
@@ -381,10 +385,9 @@ const subjectRouter = Router();
  *                   example: "An error occurred while updating the subject"
  */
 
-
 /**
  * @swagger
- * /subjects/{id}:
+ * /api/subjects/{id}:
  *   delete:
  *     summary: Delete a subject by ID
  *     description: Deletes a subject from the database if it exists. Only accessible by an authenticated user with admin privileges.
