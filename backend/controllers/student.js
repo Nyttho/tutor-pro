@@ -108,38 +108,98 @@ const createStudent = async (req, res) => {
   }
 };
 
-const deleteStudent = async (req, res) => {
+const updateStudent = async (req, res) => {
     try {
-      const userId = parseInt(req.user.id); 
+      const userId = parseInt(req.user.id);
       const studentId = parseInt(req.params.id);
   
-      const student = await Student.getById(studentId);
+      //is_active sera géré par les cours, si + de 6 mois => inactif, si inactif et nouveau cour => actif
+      const { name, surname, address, city, postCode, country, email, tel, age } = req.body;
   
+      
+      const student = await Student.getById(studentId);
       if (!student) {
         return res.status(404).json({ error: "Student not found" });
       }
   
+      
       if (parseInt(student.created_by) !== userId) {
-        return res.status(403).json({ error: "You are not allowed to delete this student" });
+        return res.status(403).json({ error: "You are not allowed to update this student" });
       }
   
-      if (student.is_deleted) {
-        return res.status(400).json({ error: "Student is already deleted" });
+      //keep actual city id
+      let cityId = student.city_id; 
+  
+      // If Post code or city then check is city in DB
+      if (city && postCode && country) {
+        let cityDb = await City.getByPostCode(country, postCode);
+  
+        if (!cityDb) {
+            //if not, create city in DB
+          cityDb = await City.create({ country, name: city, post_code: postCode });
+        }
+  
+        cityId = cityDb.id;
       }
   
-      const deleteResult = await Student.delete(studentId);
+      // update student infos
+      const updatedStudent = await Student.update(studentId, {
+        name: name || student.name,
+        surname: surname || student.surname,
+        address: address || student.address,
+        city_id: cityId,
+        email: email || student.email,
+        tel: tel || student.tel,
+        age: age || student.age,
+      });
   
-      if (!deleteResult) {
-        return res.status(500).json({ error: "Failed to delete student" });
-      }
+      return res.status(200).json({ message: "Student updated successfully", student: updatedStudent });
   
-      return res.status(200).json({ message: "Student deleted successfully" });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   };
   
 
-const studentController = { getAllStudents, getOneStudent, createStudent, deleteStudent };
+const deleteStudent = async (req, res) => {
+  try {
+    const userId = parseInt(req.user.id);
+    const studentId = parseInt(req.params.id);
+
+    const student = await Student.getById(studentId);
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    if (parseInt(student.created_by) !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not allowed to delete this student" });
+    }
+
+    if (student.is_deleted) {
+      return res.status(400).json({ error: "Student is already deleted" });
+    }
+
+    const deleteResult = await Student.delete(studentId);
+
+    if (!deleteResult) {
+      return res.status(500).json({ error: "Failed to delete student" });
+    }
+
+    return res.status(200).json({ message: "Student deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const studentController = {
+  getAllStudents,
+  getOneStudent,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+};
 
 export default studentController;
