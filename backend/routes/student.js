@@ -303,6 +303,58 @@ const studentRouter = Router();
  *                   example: "An unexpected error occurred."
  */
 
+/**
+ * @swagger
+ * /api/student/{id}:
+ *   delete:
+ *     summary: Delete a student (soft delete)
+ *     description: Marks a student as deleted by setting `is_deleted` to `true`. Only the student creator can delete them.
+ *     tags: 
+ *       - Student
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the student to delete
+ *     responses:
+ *       200:
+ *         description: Student deleted successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Student deleted successfully"
+ *       400:
+ *         description: Student is already deleted
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Student is already deleted"
+ *       403:
+ *         description: User not allowed to delete this student
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "You are not allowed to delete this student"
+ *       404:
+ *         description: Student not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Student not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Failed to delete student"
+ */
+
+
+
 studentRouter.get("/", isAuth, studentController.getAllStudents);
 studentRouter.get("/:id", isAuth, studentController.getOneStudent);
 studentRouter.post("/", isAuth, studentController.createStudent);
