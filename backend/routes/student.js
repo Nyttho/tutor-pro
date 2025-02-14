@@ -306,10 +306,144 @@ const studentRouter = Router();
 /**
  * @swagger
  * /api/student/{id}:
+ *   put:
+ *     summary: Update a student's information
+ *     description: Update an existing student's details. Only the creator of the student can perform this action.
+ *     tags: 
+ *       - Student
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the student to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "John"
+ *               surname:
+ *                 type: string
+ *                 example: "Doe"
+ *               address:
+ *                 type: string
+ *                 example: "123 Main St"
+ *               city:
+ *                 type: string
+ *                 example: "Paris"
+ *               postCode:
+ *                 type: string
+ *                 example: "75000"
+ *               country:
+ *                 type: string
+ *                 example: "France"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "johndoe@example.com"
+ *               tel:
+ *                 type: string
+ *                 example: "+33612345678"
+ *               age:
+ *                 type: integer
+ *                 example: 25
+ *     responses:
+ *       200:
+ *         description: Student updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Student updated successfully"
+ *                 student:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       example: "John"
+ *                     surname:
+ *                       type: string
+ *                       example: "Doe"
+ *                     address:
+ *                       type: string
+ *                       example: "123 Main St"
+ *                     city_id:
+ *                       type: integer
+ *                       example: 5
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: "johndoe@example.com"
+ *                     tel:
+ *                       type: string
+ *                       example: "+33612345678"
+ *                     age:
+ *                       type: integer
+ *                       example: 25
+ *       400:
+ *         description: Invalid input or missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Please enter valid information"
+ *       403:
+ *         description: Forbidden - User is not allowed to update this student
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "You are not allowed to update this student"
+ *       404:
+ *         description: Student not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Student not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+
+
+/**
+ * @swagger
+ * /api/student/{id}:
  *   delete:
  *     summary: Delete a student (soft delete)
  *     description: Marks a student as deleted by setting `is_deleted` to `true`. Only the student creator can delete them.
- *     tags: 
+ *     tags:
  *       - Student
  *     security:
  *       - BearerAuth: []
@@ -353,11 +487,10 @@ const studentRouter = Router();
  *               error: "Failed to delete student"
  */
 
-
-
 studentRouter.get("/", isAuth, studentController.getAllStudents);
 studentRouter.get("/:id", isAuth, studentController.getOneStudent);
 studentRouter.post("/", isAuth, studentController.createStudent);
+studentRouter.put("/:id", isAuth, studentController.updateStudent);
 studentRouter.delete("/:id", isAuth, studentController.deleteStudent);
 
 export default studentRouter;
