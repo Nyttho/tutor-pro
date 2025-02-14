@@ -88,16 +88,15 @@ const deleteCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
-    const isFound = Category.getById(categoryId);
+    const category = Category.getById(categoryId);
 
-    if (!isFound) {
+    if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    await Category.delete(categoryId)
+    await Category.delete(categoryId);
 
-    return res.status(200).json({message:"Category deleted successfully"})
-
+    return res.status(200).json({ message: "Category deleted successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -108,7 +107,7 @@ const categoryController = {
   getOneCategory,
   createCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 };
 
 export default categoryController;

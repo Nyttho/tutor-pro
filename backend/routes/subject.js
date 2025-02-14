@@ -225,9 +225,9 @@ const subjectRouter = Router();
  *                   example: Internal server error
  */
 
-
 subjectRouter.get("/", subjectController.getAllSubjects);
 subjectRouter.get("/:id", subjectController.getOneSubject);
 subjectRouter.post("/", isAuth, isAdmin, subjectController.createSubject);
+subjectRouter.delete("/:id", isAuth, isAdmin, subjectController.deleteSubject);
 
 export default subjectRouter;

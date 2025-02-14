@@ -67,6 +67,29 @@ const createSubject = async (req, res) => {
   }
 };
 
-const subjectController = { getAllSubjects, getOneSubject, createSubject };
+const deleteSubject = async (req, res) => {
+  try {
+    const subjectId = req.params.id;
+
+    const subject = await Subject.getById(subjectId);
+
+    if (!subject) {
+      return res.status(404).json({ error: "Subject not found" });
+    }
+
+    await Subject.delete(subjectId);
+
+    return res.status(200).json({ message: "Subject deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const subjectController = {
+  getAllSubjects,
+  getOneSubject,
+  createSubject,
+  deleteSubject,
+};
 
 export default subjectController;
