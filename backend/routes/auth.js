@@ -89,7 +89,7 @@ const authRouter = Router();
 
 /**
  * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   post:
  *     summary: Log out the user
  *     description: Clears the authentication cookie to log the user out.

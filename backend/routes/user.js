@@ -228,7 +228,7 @@ const userRouter = Router();
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/users/{id}:
  *   put:
  *     summary: Update a user
  *     description: Update a user's information. Only the user himself or an admin can update user details.
@@ -341,7 +341,7 @@ const userRouter = Router();
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/users/{id}:
  *   delete:
  *     summary: Delete a user
  *     description: Delete a user account. A user can only delete their own account.

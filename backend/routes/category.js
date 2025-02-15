@@ -8,7 +8,7 @@ const categoryRouter = Router();
 
 /**
  * @swagger
- * /categories:
+ * /api/categories:
  *   get:
  *     summary: Retrieve all categories
  *     description: Fetches a list of all available categories.
@@ -54,7 +54,7 @@ const categoryRouter = Router();
 
 /**
  * @swagger
- * /categories/{id}:
+ * /api/categories/{id}:
  *   get:
  *     summary: Retrieve a specific category
  *     description: Fetches details of a single category by its ID.
@@ -108,7 +108,7 @@ const categoryRouter = Router();
 
 /**
  * @swagger
- * /categories:
+ * /api/categories:
  *   post:
  *     summary: Create a new category
  *     description: Creates a new category. Requires authentication and admin privileges.
@@ -180,7 +180,7 @@ const categoryRouter = Router();
 
 /**
  * @swagger
- * /categories/{id}:
+ * /api/categories/{id}:
  *   put:
  *     summary: Update a category
  *     description: Updates the name of an existing category. Requires authentication and admin privileges.
@@ -259,7 +259,7 @@ const categoryRouter = Router();
 
 /**
  * @swagger
- * /categories/{id}:
+ * /api/categories/{id}:
  *   delete:
  *     summary: Delete a category
  *     description: Deletes an existing category. Requires authentication and admin privileges.
