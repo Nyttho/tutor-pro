@@ -1,6 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+//------------ URL and path ------------------
+import { fileURLToPath } from "url";
+import path from "path";
+import { dirname } from "path";
 //--------------swagger---------------------
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
@@ -22,6 +26,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //parse req body
 app.use(express.json());
+
+// get path from directory where is current file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// static pdf folder
+app.use("/pdf", express.static(path.join(__dirname, "pdf")));
 
 app.use(cookieParser());
 
