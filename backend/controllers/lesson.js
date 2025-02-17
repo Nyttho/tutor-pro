@@ -39,6 +39,27 @@ const getOneLesson = async (req, res) => {
   }
 };
 
-const lessonController = { getAllLessons, getOneLesson };
+const createLesson = async (req, res) => {
+  try {
+    const userId = parseInt(req.user.id);
+    const { name, content, subject, link, file } = req.body;
+
+    if (!name || !subject) {
+      return res
+        .status(400)
+        .json({ error: "Both 'name' and 'subject' are required" });
+    }
+
+    if (!(content || link || file)) {
+      return res.status(400).json({
+        error: "At least one of 'content', 'link', or 'file' is required",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const lessonController = { getAllLessons, getOneLesson, createLesson };
 
 export default lessonController;

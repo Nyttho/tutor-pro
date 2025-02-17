@@ -31,8 +31,11 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// static pdf folder
-app.use("/pdf", express.static(path.join(__dirname, "pdf")));
+// static files folder
+app.use(
+  "/lessons_files",
+  express.static(path.join(__dirname, "lessons_files"))
+);
 
 app.use(cookieParser());
 
