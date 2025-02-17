@@ -17,6 +17,28 @@ const getAllLessons = async (req, res) => {
   }
 };
 
-const lessonController = { getAllLessons };
+const getOneLesson = async (req, res) => {
+  try {
+    const userId = parseInt(req.user.id);
+    const lessonId = parseInt(req.params.id);
+
+    const lesson = await Lesson.getById(lessonId);
+
+    if (!lesson) {
+      return res.status(404).json({ error: "Lesson not found" });
+    }
+
+    if (lesson.created_by !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not allowed to access this lesson" });
+    }
+    return res.status(200).json({ lesson });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const lessonController = { getAllLessons, getOneLesson };
 
 export default lessonController;
