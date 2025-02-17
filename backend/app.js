@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 //------------ URL and path ------------------
 import { fileURLToPath } from "url";
 import path from "path";
@@ -24,6 +25,7 @@ const PORT = process.env.PORT || 3000;
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use(bodyParser.urlencoded({ extended: true }));
 //parse req body
 app.use(express.json());
 
@@ -32,7 +34,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // static pdf folder
-app.use("/pdf", express.static(path.join(__dirname, "pdf")));
+app.use(
+  "/lessons_files",
+  express.static(path.join(__dirname, "lessons_files"))
+);
 
 app.use(cookieParser());
 
