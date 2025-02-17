@@ -4,7 +4,7 @@ import { generateAccessToken } from "../utils/tokens.js";
 
 const auth = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password1 } = req.body;
 
     //check if user in bdd
     const user = await User.getByEmail(email);
@@ -13,7 +13,7 @@ const auth = async (req, res) => {
     }
 
     //check password
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    const isPasswordValid = await bcryptjs.compare(password1, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
@@ -29,7 +29,7 @@ const auth = async (req, res) => {
       maxAge: 1000 * 60 * 15,
     });
 
-    const { passwordb, ...cleanedUser } = user;
+    const { password, ...cleanedUser } = user;
 
     return res
       .status(200)
@@ -47,11 +47,11 @@ export const logout = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     });
 
-    res.status(200).json({message: "Successfully logged out"})
+    res.status(200).json({ message: "Successfully logged out" });
   } catch (err) {
-    res.status(500).json({error: err.message})
+    res.status(500).json({ error: err.message });
+  }
 };
-}
 
 const authController = { auth, logout };
 
