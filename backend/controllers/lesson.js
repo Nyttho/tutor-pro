@@ -100,6 +100,75 @@ const createLesson = async (req, res) => {
   }
 };
 
-const lessonController = { getAllLessons, getOneLesson, createLesson };
+const updateLesson = async (req, res) => {
+  try {
+    const lessonId = parseInt(req.params.id, 10);
+    const userId = parseInt(req.user.id, 10);
+    const { category, subject, lessonName, content, link } = req.body;
+
+    // Vérifier si la leçon existe
+    const existingLesson = await Lesson.getById(lessonId);
+    if (!existingLesson) {
+      return res.status(404).json({ error: "Lesson not found" });
+    }
+
+    // Vérifier si l'utilisateur est le propriétaire de la leçon
+    if (existingLesson.created_by !== userId) {
+      return res.status(403).json({ error: "Unauthorized access" });
+    }
+
+    // Vérification des champs obligatoires
+    if (category?.trim() || subject?.trim() || lessonName?.trim()) {
+      const [categoryDb, subjectDb] = await Promise.all([
+        category
+          ? Category.getByName(category.trim())
+          : existingLesson.category,
+        subject ? Subject.getByName(subject.trim()) : existingLesson.subject,
+      ]);
+
+      if (category && !categoryDb)
+        return res.status(404).json({ error: "Category not found" });
+      if (subject && !subjectDb)
+        return res.status(404).json({ error: "Subject not found" });
+
+      existingLesson.subject_id = subjectDb
+        ? subjectDb.id
+        : existingLesson.subject_id;
+    }
+
+    // Mise à jour des données de la leçon
+    existingLesson.name = lessonName ? lessonName.trim() : existingLesson.name;
+    existingLesson.content = content || existingLesson.content;
+
+    // Gestion du fichier s'il est mis à jour
+    if (req.file) {
+      const newFile = await registerFile(req, path);
+      existingLesson.file_id = newFile.id;
+    }
+
+    // Gestion du lien s'il est mis à jour
+    if (link?.trim()) {
+      const newLink = await Link.create({ link: link.trim() });
+      existingLesson.link_id = newLink.id;
+    }
+
+    // Enregistrement des modifications
+    const updatedLesson = await Lesson.update(lessonId, existingLesson);
+
+    return res
+      .status(200)
+      .json({ message: "Lesson updated successfully", lesson: updatedLesson });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const lessonController = {
+  getAllLessons,
+  getOneLesson,
+  createLesson,
+  updateLesson,
+};
 
 export default lessonController;

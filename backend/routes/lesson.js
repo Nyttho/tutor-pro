@@ -283,5 +283,11 @@ lessonRouter.post(
   fileManager.single("file"),
   lessonController.createLesson
 );
+lessonRouter.put(
+  "/:id",
+  isAuth,
+  fileManager.single("file"),
+  lessonController.updateLesson
+);
 
 export default lessonRouter;
