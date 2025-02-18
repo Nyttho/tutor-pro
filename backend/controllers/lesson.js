@@ -2,8 +2,8 @@ import Lesson from "../models/Lesson.js";
 import Category from "../models/Category.js";
 import Subject from "../models/Subject.js";
 import Link from "../models/Link.js";
-import File from "../models/File.js";
 import path from "path";
+import registerFile from "../utils/registerFile.js";
 
 const getAllLessons = async (req, res) => {
   try {
@@ -81,21 +81,7 @@ const createLesson = async (req, res) => {
 
     // Ajout du fichier si présent
     if (req.file) {
-      let filePath = path.join(
-        "/lessons_files",
-        req.body.category.trim(),
-        req.body.subject.trim(),
-        req.body.lessonName.trim(),
-        req.file.filename
-      );
-
-      filePath = filePath.replace(/\\/g, "/");
-
-      const newFile = await File.create({
-        file_url: filePath,
-        file_type: req.file.mimetype,
-        size: req.file.size,
-      });
+      const newFile = await registerFile(req, path);
 
       newLesson.file_id = newFile.id;
     }
