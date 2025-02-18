@@ -405,6 +405,55 @@ const lessonRouter = Router();
  *                   example: "Internal server error"
  */
 
+/**
+ * @swagger
+ * /lessons/{id}:
+ *   delete:
+ *     summary: Delete a lesson by its ID
+ *     description: Deletes the lesson and its associated file from the server.
+ *     operationId: deleteLesson
+ *     tags:
+ *       - Lessons
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the lesson to delete
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: The lesson has been deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Lesson deleted successfully
+ *       404:
+ *         description: Lesson not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Lesson not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
 lessonRouter.get("/", isAuth, lessonController.getAllLessons);
 lessonRouter.get("/:id", isAuth, lessonController.getOneLesson);
 lessonRouter.post(
