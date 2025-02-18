@@ -3,7 +3,7 @@ import Category from "../models/Category.js";
 import Subject from "../models/Subject.js";
 import Link from "../models/Link.js";
 import path from "path";
-import registerFile from "../utils/registerFile.js";
+import { registerFile, deleteFile } from "../utils/fileManager.js";
 
 const getAllLessons = async (req, res) => {
   try {
@@ -164,11 +164,45 @@ const updateLesson = async (req, res) => {
   }
 };
 
+const deleteLesson = async (req, res) => {
+  try {
+    const lessonId = parseInt(req.params.id, 10);
+    const userId = parseInt(req.user.id, 10);
+
+    // Vérifier si la leçon existe
+    const lesson = await Lesson.getById(lessonId);
+    if (!lesson) {
+      return res.status(404).json({ error: "Lesson not found" });
+    }
+
+    // Vérifier si l'utilisateur est le propriétaire de la leçon
+    if (lesson.created_by !== userId) {
+      return res.status(403).json({ error: "Unauthorized access" });
+    }
+
+    // Supprimer le fichier si la leçon a un fichier associé
+    if (lesson.file_id) {
+      await deleteFile(lesson.file_id); // Appeler la fonction deleteFile
+    }
+
+    // Supprimer la leçon de la base de données
+    await Lesson.delete(lessonId);
+
+    return res
+      .status(200)
+      .json({ message: "Lesson and associated file deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const lessonController = {
   getAllLessons,
   getOneLesson,
   createLesson,
   updateLesson,
+  deleteLesson,
 };
 
 export default lessonController;

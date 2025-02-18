@@ -419,5 +419,6 @@ lessonRouter.put(
   fileManager.single("file"),
   lessonController.updateLesson
 );
+lessonRouter.delete("/:id", isAuth, lessonController.deleteLesson);
 
 export default lessonRouter;
