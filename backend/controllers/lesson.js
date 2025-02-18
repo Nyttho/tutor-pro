@@ -69,7 +69,6 @@ const createLesson = async (req, res) => {
       return res.status(404).json({ error: "Category not found" });
     if (!subjectDb) return res.status(404).json({ error: "Subject not found" });
 
-    // Création de l'objet lesson
     const newLesson = {
       user_id: userId,
       subject_id: subjectDb.id,
@@ -79,20 +78,17 @@ const createLesson = async (req, res) => {
       created_by: userId,
     };
 
-    // Ajout du fichier si présent
     if (req.file) {
       const newFile = await registerFile(req, path);
 
       newLesson.file_id = newFile.id;
     }
 
-    // Ajout du lien si présent
     if (link?.trim()) {
       const newLink = await Link.create({ link: link.trim() });
       newLesson.link_id = newLink.id;
     }
 
-    // Sauvegarde de la leçon
     const lesson = await Lesson.create(newLesson);
 
     return res
