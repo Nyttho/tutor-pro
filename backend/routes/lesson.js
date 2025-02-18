@@ -163,6 +163,118 @@ const lessonRouter = Router();
  *                   example: "Internal Server Error"
  */
 
+/**
+ * @swagger
+ * /lessons:
+ *   post:
+ *     summary: Create a new lesson
+ *     tags:
+ *       - Lessons
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               category:
+ *                 type: string
+ *                 example: "Grammar"
+ *               subject:
+ *                 type: string
+ *                 example: "English"
+ *               lessonName:
+ *                 type: string
+ *                 example: "List of irregular verbs"
+ *               content:
+ *                 type: string
+ *                 example: "A detailed lesson on irregular verbs."
+ *               link:
+ *                 type: string
+ *                 nullable: true
+ *                 example: "https://example.com/lesson-resource"
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: "Optional file upload"
+ *     responses:
+ *       201:
+ *         description: Lesson created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Lesson created successfully"
+ *                 lesson:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 10
+ *                     name:
+ *                       type: string
+ *                       example: "List of irregular verbs"
+ *                     content:
+ *                       type: string
+ *                       example: "A detailed lesson on irregular verbs."
+ *                     subject_id:
+ *                       type: integer
+ *                       example: 1
+ *                     user_id:
+ *                       type: integer
+ *                       example: 2
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2025-02-17T14:26:53.637Z"
+ *                     created_by:
+ *                       type: integer
+ *                       example: 2
+ *                     file_id:
+ *                       type: integer
+ *                       nullable: true
+ *                       example: 5
+ *                     link_id:
+ *                       type: integer
+ *                       nullable: true
+ *                       example: 7
+ *       400:
+ *         description: Missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Category, subject, and lesson name are required"
+ *       404:
+ *         description: Category or subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Category not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+
 lessonRouter.get("/", isAuth, lessonController.getAllLessons);
 lessonRouter.get("/:id", isAuth, lessonController.getOneLesson);
 lessonRouter.post(
