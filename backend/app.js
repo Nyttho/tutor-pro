@@ -21,8 +21,6 @@ import courseRouter from "./routes/course.js";
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -51,6 +49,4 @@ app.use("/api/student", studentRouter);
 app.use("/api/lesson", lessonRouter);
 app.use("/api/course", courseRouter);
 
-app.listen(PORT, () => {
-  console.log("listening on port", PORT);
-});
+export default app;
