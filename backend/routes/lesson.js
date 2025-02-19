@@ -407,23 +407,30 @@ const lessonRouter = Router();
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  * /lessons/{id}:
  *   delete:
- *     summary: Delete a lesson by its ID
- *     description: Deletes the lesson and its associated file from the server.
- *     operationId: deleteLesson
+ *     summary: Supprimer une leçon
+ *     description: Permet de supprimer une leçon et son fichier associé, si l'utilisateur est le propriétaire.
  *     tags:
  *       - Lessons
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: The ID of the lesson to delete
+ *         description: ID de la leçon à supprimer.
  *         schema:
  *           type: integer
+ *     security:
+ *       - bearerAuth: []  # Cela indique que la route nécessite un token Bearer
  *     responses:
  *       200:
- *         description: The lesson has been deleted successfully
+ *         description: La leçon et son fichier associé ont été supprimés avec succès.
  *         content:
  *           application/json:
  *             schema:
@@ -431,9 +438,9 @@ const lessonRouter = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Lesson deleted successfully
+ *                   example: "Lesson and associated file deleted successfully"
  *       404:
- *         description: Lesson not found
+ *         description: Leçon non trouvée.
  *         content:
  *           application/json:
  *             schema:
@@ -441,9 +448,19 @@ const lessonRouter = Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Lesson not found
+ *                   example: "Lesson not found"
+ *       403:
+ *         description: L'utilisateur n'a pas l'autorisation de supprimer cette leçon.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized access"
  *       500:
- *         description: Internal server error
+ *         description: Erreur interne du serveur.
  *         content:
  *           application/json:
  *             schema:
@@ -451,7 +468,7 @@ const lessonRouter = Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Internal server error
+ *                   example: "Internal server error"
  */
 
 lessonRouter.get("/", isAuth, lessonController.getAllLessons);
