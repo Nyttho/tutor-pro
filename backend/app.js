@@ -17,6 +17,7 @@ import categoryRouter from "./routes/category.js";
 import subjectRouter from "./routes/subject.js";
 import studentRouter from "./routes/student.js";
 import lessonRouter from "./routes/lesson.js";
+import courseRouter from "./routes/course.js";
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/lesson", lessonRouter);
+app.use("/api/course", courseRouter);
 
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
