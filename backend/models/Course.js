@@ -32,6 +32,24 @@ class Course extends Crud {
     const result = await pool.query(query, params);
     return result.rows;
   }
+
+  async hasOverlap(professorId, scheduledAt, duration) {
+    const endAt = new Date(scheduledAt.getTime() + duration * 60000);
+
+    const query = `
+      SELECT EXISTS (
+        SELECT 1 FROM ${this.tableName}
+        WHERE professor_id = $1
+        AND (
+          (scheduled_at <= $2 AND (scheduled_at + INTERVAL '1 minute' * duration) > $2) OR
+          (scheduled_at < $3 AND (scheduled_at + INTERVAL '1 minute' * duration) >= $3)
+        )
+      ) AS overlap;
+    `;
+
+    const result = await pool.query(query, [professorId, scheduledAt, endAt]);
+    return result.rows[0].overlap;
+  }
 }
 
 export default new Course();
