@@ -8,17 +8,15 @@ import {
 //ajouter un vérificateur lié aux cours, si le dernier cours a eu lieu il y'a plus de 6 mois (par exemple passer l'étudiant en mode inactif)
 const getAllStudents = async (req, res) => {
   try {
-    const user = parseInt(req.user);
+    const userId = parseInt(req.user.id);
 
-    const students = (await Student.getAll()).filter(
-      (s) => s.created_by === user.id
-    );
+    const students = await Student.getByProfessorId(userId)
 
     if (students.length === 0) {
       return res.status(404).json({ error: "Students not found" });
     }
 
-    res.status(200).json({ students });
+    res.status(200).json( students );
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -35,7 +33,7 @@ const getOneStudent = async (req, res) => {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    if (student.created_by !== userId) {
+    if (student.createdBy !== userId) {
       return res
         .status(403)
         .json({ error: "You are not allowed to access this student" });
@@ -84,17 +82,17 @@ const createStudent = async (req, res) => {
 
     let cityDb = await City.getByPostCode(country, postCode);
     if (!cityDb) {
-      cityDb = await City.create({ country, name: city, post_code: postCode });
+      cityDb = await City.create({ country, name: city, postCode: postCode });
     }
 
     const newStudent = await Student.create({
       name,
       surname,
       address,
-      city_id: cityDb.id,
-      is_active: true,
-      created_by: userId,
-      created_at: new Date(),
+      cityId: cityDb.id,
+      isActive: true,
+      createdBy: userId,
+      createdAt: new Date(),
       email,
       tel,
       age,
@@ -122,14 +120,14 @@ const updateStudent = async (req, res) => {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    if (parseInt(student.created_by) !== userId) {
+    if (parseInt(student.createdBy) !== userId) {
       return res
         .status(403)
         .json({ error: "You are not allowed to update this student" });
     }
 
     //keep actual city id
-    let cityId = student.city_id;
+    let cityId = student.cityId;
 
     // If Post code or city then check is city in DB
     if (city && postCode && country) {
@@ -140,7 +138,7 @@ const updateStudent = async (req, res) => {
         cityDb = await City.create({
           country,
           name: city,
-          post_code: postCode,
+          postCode: postCode,
         });
       }
 
@@ -166,7 +164,7 @@ const updateStudent = async (req, res) => {
       name: name || student.name,
       surname: surname || student.surname,
       address: address || student.address,
-      city_id: cityId,
+      cityId: cityId,
       email: email || student.email,
       tel: tel || student.tel,
       age: age || student.age,
@@ -194,13 +192,13 @@ const deleteStudent = async (req, res) => {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    if (parseInt(student.created_by) !== userId) {
+    if (parseInt(student.createdBy) !== userId) {
       return res
         .status(403)
         .json({ error: "You are not allowed to delete this student" });
     }
 
-    if (student.is_deleted) {
+    if (student.isDeleted) {
       return res.status(400).json({ error: "Student is already deleted" });
     }
 

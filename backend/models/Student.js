@@ -1,6 +1,6 @@
 import Crud from "./Crud.js";
 import pool from "../database/db.js";
-
+import { convertKeysToCamel } from "../utils/normalizers.js";
 class Student extends Crud {
   constructor() {
     super("students");
@@ -12,9 +12,21 @@ class Student extends Crud {
         [name, surname, address]
       );
 
-      return result.rows[0] || null;
+      return result.rows[0] ? convertKeysToCamel(result.rows[0]) : null;
     } catch (err) {
       return { error: "Error while checking for student" };
+    }
+  }
+
+  async getByProfessorId(id) {
+    try {
+      const result = await pool.query(
+        "SELECT * FROM students WHERE created_by = $1",
+        [id]
+      );
+      return result.rows.map(convertKeysToCamel);
+    } catch (err) {
+      return { error: "Error while checking for students" };
     }
   }
   async delete(studentId) {

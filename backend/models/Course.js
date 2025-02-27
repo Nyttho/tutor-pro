@@ -1,5 +1,6 @@
 import Crud from "./Crud.js";
 import pool from "../database/db.js";
+import { convertKeysToCamel } from "../utils/normalizers.js";
 
 class Course extends Crud {
   constructor() {
@@ -30,7 +31,7 @@ class Course extends Crud {
     query += " ORDER BY scheduled_at ASC";
 
     const result = await pool.query(query, params);
-    return result.rows;
+    return result.rows.map(convertKeysToCamel);
   }
 
   async hasOverlap(professorId, scheduledAt, duration) {
@@ -48,7 +49,7 @@ class Course extends Crud {
     `;
 
     const result = await pool.query(query, [professorId, scheduledAt, endAt]);
-    return result.rows[0].overlap;
+    return convertKeysToCamel(result.rows[0]).overlap;
   }
 }
 

@@ -42,7 +42,7 @@ const getOneCourse = async (req, res) => {
       return res.status(404).json({ error: "Course not found" });
     }
 
-    if (course.professor_id !== userId) {
+    if (course.professorId !== userId) {
       return res
         .status(403)
         .json({ error: "You are not allowed to access this course" });
@@ -61,13 +61,13 @@ const createCourse = async (req, res) => {
       return res.status(400).json({ error: "Invalid user ID" });
     }
 
-    const { student_id, lesson_id, scheduled_at, duration, price } = req.body;
+    const { studentId, lessonId, scheduled, duration, price } = req.body;
 
-    if (!student_id || !lesson_id || !scheduled_at) {
+    if (!studentId || !lessonId || !scheduled) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const scheduledAt = new Date(scheduled_at);
+    const scheduledAt = new Date(scheduled);
     if (isNaN(scheduledAt.getTime())) {
       return res.status(400).json({ error: "Invalid date format" });
     }
@@ -88,10 +88,10 @@ const createCourse = async (req, res) => {
 
     // Création du cours si pas de conflit
     const newCourse = await Course.create({
-      student_id,
-      professor_id: userId,
-      lesson_id,
-      scheduled_at: scheduledAt,
+      studentId,
+      professorId: userId,
+      lessonId,
+      scheduledAt: scheduledAt,
       duration: courseDuration,
       price,
       status: "pending",

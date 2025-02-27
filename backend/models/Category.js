@@ -1,5 +1,6 @@
 import Crud from "./Crud.js";
 import pool from "../database/db.js";
+import { convertKeysToCamel } from "../utils/normalizers.js";
 
 class Category extends Crud {
   constructor() {
@@ -10,7 +11,7 @@ class Category extends Crud {
     const query = `SELECT * FROM ${this.tableName} WHERE name = $1;`;
     const result = await pool.query(query, [name.toLowerCase()]);
 
-    return result.rows[0] || null;
+     return result.rows[0] ? convertKeysToCamel(result.rows[0]) : null;
   }
 }
 

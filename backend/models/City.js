@@ -1,5 +1,6 @@
 import Crud from "./Crud.js";
 import pool from "../database/db.js";
+import { convertKeysToCamel } from "../utils/normalizers.js";
 
 class City extends Crud {
   constructor() {
@@ -10,7 +11,7 @@ class City extends Crud {
     const query = `SELECT * FROM ${this.tableName} WHERE country = $1 AND post_code = $2;`;
     const result = await pool.query(query, [country, postCode]);
 
-    return result.rows[0]; 
+    return convertKeysToCamel(result.rows[0]); 
 }
 
 }

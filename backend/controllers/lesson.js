@@ -12,7 +12,7 @@ const getAllLessons = async (req, res) => {
     // Récupération des leçons créées par l'utilisateur
     const lessons = await Lesson.getAll();
     const userLessons = lessons.filter(
-      (lesson) => lesson.created_by === userId
+      (lesson) => lesson.createdBy === userId
     );
 
     if (userLessons.length === 0) {
@@ -36,7 +36,7 @@ const getOneLesson = async (req, res) => {
       return res.status(404).json({ error: "Lesson not found" });
     }
 
-    if (lesson.created_by !== userId) {
+    if (lesson.createdBy !== userId) {
       return res.status(403).json({ error: "Unauthorized access" });
     }
 
@@ -70,23 +70,23 @@ const createLesson = async (req, res) => {
     if (!subjectDb) return res.status(404).json({ error: "Subject not found" });
 
     const newLesson = {
-      user_id: userId,
-      subject_id: subjectDb.id,
+      userId: userId,
+      subjectId: subjectDb.id,
       name: lessonName.trim(),
       content: content || "",
-      created_at: new Date(),
-      created_by: userId,
+      createdAt: new Date(),
+      createdBy: userId,
     };
 
     if (req.file) {
       const newFile = await registerFile(req, path);
 
-      newLesson.file_id = newFile.id;
+      newLesson.fileId = newFile.id;
     }
 
     if (link?.trim()) {
       const newLink = await Link.create({ link: link.trim() });
-      newLesson.link_id = newLink.id;
+      newLesson.linkId = newLink.id;
     }
 
     const lesson = await Lesson.create(newLesson);
@@ -113,7 +113,7 @@ const updateLesson = async (req, res) => {
     }
 
     // Vérifier si l'utilisateur est le propriétaire de la leçon
-    if (existingLesson.created_by !== userId) {
+    if (existingLesson.createdBy !== userId) {
       return res.status(403).json({ error: "Unauthorized access" });
     }
 
@@ -131,9 +131,9 @@ const updateLesson = async (req, res) => {
       if (subject && !subjectDb)
         return res.status(404).json({ error: "Subject not found" });
 
-      existingLesson.subject_id = subjectDb
+      existingLesson.subjectId = subjectDb
         ? subjectDb.id
-        : existingLesson.subject_id;
+        : existingLesson.subjectId;
     }
 
     // Mise à jour des données de la leçon
@@ -143,13 +143,13 @@ const updateLesson = async (req, res) => {
     // Gestion du fichier s'il est mis à jour
     if (req.file) {
       const newFile = await registerFile(req, path);
-      existingLesson.file_id = newFile.id;
+      existingLesson.fileId = newFile.id;
     }
 
     // Gestion du lien s'il est mis à jour
     if (link?.trim()) {
       const newLink = await Link.create({ link: link.trim() });
-      existingLesson.link_id = newLink.id;
+      existingLesson.linkId = newLink.id;
     }
 
     // Enregistrement des modifications
@@ -176,13 +176,13 @@ const deleteLesson = async (req, res) => {
     }
 
     // Vérifier si l'utilisateur est le propriétaire de la leçon
-    if (lesson.created_by !== userId) {
+    if (lesson.createdBy !== userId) {
       return res.status(403).json({ error: "Unauthorized access" });
     }
 
     // Supprimer le fichier si la leçon a un fichier associé
-    if (lesson.file_id) {
-      await deleteFile(lesson.file_id); // Appeler la fonction deleteFile
+    if (lesson.fileId) {
+      await deleteFile(lesson.fileId); // Appeler la fonction deleteFile
     }
 
     // Supprimer la leçon de la base de données

@@ -54,8 +54,8 @@ const createSubject = async (req, res) => {
 
     const subjectFields = {
       name,
-      category_id: categoryDb.id,
-      created_by: user.id,
+      categoryId: categoryDb.id,
+      createdBy: user.id,
     };
 
     const newSubject = await Subject.create(subjectFields);
@@ -89,7 +89,7 @@ const updateSubject = async (req, res) => {
 
     const updatedSubject = await Subject.update(subjectId, {
       name,
-      category_id: categoryDb.id,
+      categoryId: categoryDb.id,
     });
 
     if (!updatedSubject) {

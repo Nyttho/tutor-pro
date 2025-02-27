@@ -66,7 +66,7 @@ const createUser = async (req, res) => {
       city = await City.create({
         country: countryName,
         name: cityName,
-        post_code: postCode,
+        postCode: postCode,
       });
     }
 
@@ -77,9 +77,9 @@ const createUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      is_admin: false,
-      city_id: city.id,
-      created_at: new Date(),
+      isAdmin: false,
+      cityId: city.id,
+      createdAt: new Date(),
     };
 
     const user = await User.create(newUser);
@@ -98,7 +98,7 @@ const updateUser = async (req, res) => {
     const tokenId = req.user.id;
     const isAdmin = req.user.admin;
 
-    const { is_admin, ...updateFields } = req.body;
+    const { admin, ...updateFields } = req.body;
 
     //Verify if user in database
     const existingUser = await User.getById(userId);
@@ -114,7 +114,7 @@ const updateUser = async (req, res) => {
     }
 
     //Verify if user is admin
-    if (!isAdmin && is_admin !== undefined) {
+    if (!isAdmin && admin !== undefined) {
       return res.status(403).json({ message: "You can't change your role" });
     }
 
