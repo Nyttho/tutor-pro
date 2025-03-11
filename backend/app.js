@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import cors from "cors"
 //------------ URL and path ------------------
 import { fileURLToPath } from "url";
 import path from "path";
@@ -20,6 +21,13 @@ import lessonRouter from "./routes/lesson.js";
 import courseRouter from "./routes/course.js";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5174", // Frontend
+    credentials: true, // allows cookies
+  })
+);
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
