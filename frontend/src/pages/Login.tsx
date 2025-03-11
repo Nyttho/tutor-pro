@@ -1,26 +1,28 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { LogIn } from "lucide-react";
-const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const {login} = useAuth()
+import { Link } from "react-router-dom";
+import FormInput from "../components/ui/FormInput";
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setError("");
-      setIsLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-      try {
-        await login(email, password);
-      } catch (err) {
-        setError("Email ou mot de passe incorrect");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    try {
+      await login(email, password);
+    } catch (err) {
+      setError("Email ou mot de passe incorrect");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -42,37 +44,23 @@ const Login = () => {
               {error}
             </div>
           )}
-              <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Mot de passe"
-              />
-            </div>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <FormInput
+              name="email"
+              type="email"
+              isRequired={true}
+              value={email}
+              onChange={setEmail}
+              placeholder="Email"
+            />
+            <FormInput
+              name="password"
+              type="password"
+              isRequired={true}
+              value={password}
+              onChange={setPassword}
+              placeholder="Mot de passe"
+            />
           </div>
           <div>
             <button
@@ -89,10 +77,14 @@ const Login = () => {
               {isLoading ? "Connexion..." : "Se connecter"}
             </button>
           </div>
+          <p className="text-center">
+            Vous n'avez pas de compte ?{" "}
+            <Link to="/subscribe" className="underline text-indigo-500">
+              S'inscrire
+            </Link>
+          </p>
         </form>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
