@@ -5,11 +5,10 @@ import {
   Layout as LayoutIcon,
   LogOut,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import MenuItem from "./ui/MenuItem";
 
 export default function Sidebar() {
-  const location = useLocation();
   const { user, logout } = useAuth();
 
   const menuItems = [
@@ -34,20 +33,14 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1">
-      {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
+        {menuItems.map((item) => {
           return (
-            <Link
+            <MenuItem
+              icon={item.icon}
+              text={item.text}
+              path={item.path}
               key={item.path}
-              to={item.path}
-              className={`flex items-center space-x-3 p-3 rounded-lg mb-2 transition-colors ${
-                isActive ? "bg-indigo-700" : "hover:bg-indigo-700/50"
-              }`}
-            >
-              <Icon size={20} />
-              <span>{item.text}</span>
-            </Link>
+            />
           );
         })}
       </nav>
