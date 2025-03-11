@@ -1,7 +1,9 @@
 export interface User {
-    id: string;
-    firstName: string;
-    lastName: string;
+    id: number;
+    name: string;
     email: string;
-    avatar?: string;
+    isAdmin: boolean;
+    cityId: number;
+    createdAt: string;
+    updatedAt: string;
   }
