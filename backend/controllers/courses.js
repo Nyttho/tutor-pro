@@ -2,7 +2,7 @@ import Course from "../models/Course.js";
 
 const getAllCourse = async (req, res) => {
   try {
-    const userId = parseInt(req.params.id);
+    const userId = parseInt(req.user.id);
     if (isNaN(userId)) {
       return res.status(400).json({ error: "Invalid professor ID" });
     }
@@ -17,7 +17,7 @@ const getAllCourse = async (req, res) => {
     });
 
     if (courses.length === 0) {
-      return res.status(404).json({ error: "No courses found" });
+      return res.status(200).json([]);
     }
 
     return res.status(200).json(courses);

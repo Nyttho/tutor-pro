@@ -1,10 +1,14 @@
 import { Calendar, Users, BookOpen, TrendingUp } from "lucide-react";
 import StatItem from "../components/ui/StatItem";
 import { useState, useEffect } from "react";
-import { getStudentsNb } from "../utils/getStats";
+import { getStudentsNb, getCourses } from "../utils/getStats";
+import { Course } from "../types/CourseType";
 
 export default function Dashboard() {
     const [studentsNb, setStudentNb] = useState(0)
+    const [coursesNb, setCoursesNb] = useState(0)
+    const [pendingCourses, setPendingCourses] = useState(0)
+    const [monthAmount, setMonthAmount] = useState(0)
 
     useEffect(() => {
         (async () => { 
@@ -13,8 +17,19 @@ export default function Dashboard() {
             if (count !== undefined) {
               setStudentNb(count);
             }
+            const monthCourses = await getCourses();
+            if (monthCourses !== undefined || monthCourses.length !== 0) {
+                console.log(monthCourses);
+                setCoursesNb(monthCourses.length)
+                const payedCourses = monthCourses.filter((course: Course)=> course.status === "paid")
+                const unpayedCourses = monthCourses.length - payedCourses.length
+                setPendingCourses(unpayedCourses)
+                setMonthAmount(payedCourses.reduce((acc: number, course: Course) => acc + course.price, 0))
+            }
+
+
           } catch (err) {
-            console.error("Error fetching students", err);
+            console.error("Error fetching datas", err);
           }
         })();
       }, []);
@@ -29,19 +44,19 @@ export default function Dashboard() {
     },
     {
       title: "Cours ce mois",
-      value: 0,
+      value: coursesNb,
       icon: Calendar,
       color: "bg-green-500",
     },
     {
       title: "Revenus du mois",
-      value: `0€`,
+      value: `${monthAmount}€`,
       icon: TrendingUp,
       color: "bg-purple-500",
     },
     {
       title: "Paiements en attente",
-      value: 0,
+      value: pendingCourses,
       icon: BookOpen,
       color: "bg-red-500",
     },
