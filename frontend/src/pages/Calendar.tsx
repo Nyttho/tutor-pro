@@ -25,7 +25,7 @@ export default function Calendar() {
       </div>
 
       {/* Calendrier */}
-      <div className="bg-white rounded-xl shadow-sm">
+      <div className="bg-gray-100 rounded-xl shadow-sm">
         {/* Jours de la semaine */}
         <div className="grid grid-cols-7 gap-px border-b">
           {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((day) => (
@@ -42,15 +42,15 @@ export default function Calendar() {
         <div className="grid grid-cols-7 gap-1 p-1">
           {/* Jours vides avant le 1er du mois */}
           {emptyDays.map((_, index) => (
-            <div key={index} className="h-32 bg-gray-50" />
+            <div key={index} className="h-32 bg-gray-100" />
           ))}
 
           {/* Jours du mois */}
           {days.map((day) => (
             <div
               key={day}
-              className={`h-32 flex items-start justify-start text-lg font-semibold p-2 rounded-lg bg-gray-100 border-2 ${
-                day === currentDay ? " border-indigo-500 " : "border-gray-200"
+              className={`h-32 flex items-start justify-start text-lg font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
+                day === currentDay ? " border-indigo-500 border-2" : "border-gray-200"
               }`}
             >
               {day}
