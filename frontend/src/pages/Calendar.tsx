@@ -47,13 +47,13 @@ export default function Calendar() {
     <div className="space-y-8">
       {/* En-tête */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-5 mx-auto text-indigo-600">
+        <div className="flex items-center  mx-auto text-indigo-600">
           {/* Flèche gauche */}
           <button onClick={prevMonth} className="cursor-pointer">
             <ArrowBigLeft size={25} />
           </button>
 
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 w-[400px] text-center">
             Calendrier {currentMonth} {year}
           </h1>
 
