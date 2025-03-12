@@ -6,6 +6,7 @@ import Subscribe from "./pages/Subscribe";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Students from "./pages/Students";
+import StudentDetail from "./pages/StudentDetail";
 import PrivateRoutes from "./components/PrivateRoutes"; 
 
 function App() {
@@ -39,6 +40,14 @@ function App() {
               element={
                 <Layout>
                   <Students />
+                </Layout>
+              }
+            />
+             <Route
+              path="/student/:id"
+              element={
+                <Layout>
+                  <StudentDetail />
                 </Layout>
               }
             />

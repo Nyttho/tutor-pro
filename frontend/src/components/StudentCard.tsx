@@ -9,7 +9,7 @@ interface StudentCardProps {
 export default function StudentCard({ student }: StudentCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
-      <Link to="#">
+      <Link to={`/student/${student.id}`}>
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-xl font-semibold text-gray-900">

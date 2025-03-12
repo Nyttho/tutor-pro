@@ -14,6 +14,18 @@ export const getStudents = async () => {
     }
 }
 
+export const getStudentById = async (id: string | undefined) => {
+    try {
+        const response = await fetch(`${backendUrl}/api/student/${id}`, {
+            credentials: 'include'
+        })
+        const datas = await response.json()
+        return datas
+    } catch(err) {
+        console.error("Error fetching student")
+    }
+}
+
 export const getCourses = async () => {
     try {
         const today = new Date()
