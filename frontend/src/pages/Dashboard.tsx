@@ -19,7 +19,6 @@ export default function Dashboard() {
             }
             const monthCourses = await getCourses();
             if (monthCourses !== undefined || monthCourses.length !== 0) {
-                console.log(monthCourses);
                 setCoursesNb(monthCourses.length)
                 const payedCourses = monthCourses.filter((course: Course)=> course.status === "paid")
                 const unpayedCourses = monthCourses.length - payedCourses.length

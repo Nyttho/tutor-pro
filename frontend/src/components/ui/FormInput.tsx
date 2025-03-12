@@ -9,7 +9,7 @@ interface FormInputProps {
 export default function FormInput({name, type, isRequired, value, onChange, placeholder}: FormInputProps){
     return (
         <div>
-        <label htmlFor="password" className="sr-only">
+        <label htmlFor={name} className="sr-only">
           Mot de passe
         </label>
         <input

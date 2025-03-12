@@ -5,15 +5,18 @@ import Login from "./pages/Login";
 import Subscribe from "./pages/Subscribe";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
+import PrivateRoutes from "./components/PrivateRoutes"; // Assurez-vous d'importer PrivateRoutes
+
 function App() {
   return (
-    <>
-      <Router>
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/subscribe" element={<Subscribe />} />
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/subscribe" element={<Subscribe />} />
 
+          {/* Protéger les routes à l'intérieur de PrivateRoutes */}
+          <Route element={<PrivateRoutes />}>
             <Route
               path="/"
               element={
@@ -30,10 +33,10 @@ function App() {
                 </Layout>
               }
             />
-          </Routes>
-        </AuthProvider>
-      </Router>
-    </>
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }
 
