@@ -35,10 +35,9 @@ class Course extends Crud {
   
     try {
       const result = await pool.query(query, params);
-      console.log("Résultats de la requête : ", result.rows);  // Debugging
       return result.rows.map(convertKeysToCamel);
     } catch (err) {
-      console.error('Erreur lors de l\'exécution de la requête', err);
+      console.error("Erreur lors de l'exécution de la requête", err);
       throw new Error('Échec de la requête à la base de données');
     }
   }

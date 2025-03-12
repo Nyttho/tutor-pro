@@ -1,8 +1,8 @@
 import { Calendar, Users, BookOpen, TrendingUp } from "lucide-react";
 import StatItem from "../components/ui/StatItem";
 import { useState, useEffect } from "react";
-import { getStudentsNb, getCourses } from "../utils/getStats";
-import { Course } from "../types/CourseType";
+import { getStudents, getCourses } from "../utils/getStats";
+import { CourseType } from "../types/CourseType";
 
 export default function Dashboard() {
     const [studentsNb, setStudentNb] = useState(0)
@@ -13,18 +13,18 @@ export default function Dashboard() {
     useEffect(() => {
         (async () => { 
           try {
-            const count = await getStudentsNb();
+            const datas = await getStudents();
+            const count = datas.length
             if (count !== undefined) {
               setStudentNb(count);
             }
             const monthCourses = await getCourses();
             if (monthCourses !== undefined || monthCourses.length !== 0) {
-                console.log(monthCourses);
                 setCoursesNb(monthCourses.length)
-                const payedCourses = monthCourses.filter((course: Course)=> course.status === "paid")
+                const payedCourses = monthCourses.filter((course: CourseType)=> course.status === "paid")
                 const unpayedCourses = monthCourses.length - payedCourses.length
                 setPendingCourses(unpayedCourses)
-                setMonthAmount(payedCourses.reduce((acc: number, course: Course) => acc + course.price, 0))
+                setMonthAmount(payedCourses.reduce((acc: number, course: CourseType) => acc + course.price, 0))
             }
 
 

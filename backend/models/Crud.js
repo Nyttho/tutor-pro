@@ -33,6 +33,9 @@ class Crud {
   }
 
   async getById(id) {
+    if (!id) {
+      throw new Error("ID utilisateur invalide");
+    }
     const query = `SELECT * FROM ${this.tableName} WHERE id = $1;`;
     const result = await pool.query(query, [id]);
     return result.rows[0] ? convertKeysToCamel(result.rows[0]) : null;

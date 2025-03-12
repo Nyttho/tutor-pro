@@ -5,15 +5,20 @@ import Login from "./pages/Login";
 import Subscribe from "./pages/Subscribe";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
+import Students from "./pages/Students";
+import StudentDetail from "./pages/StudentDetail";
+import PrivateRoutes from "./components/PrivateRoutes"; 
+
 function App() {
   return (
-    <>
-      <Router>
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/subscribe" element={<Subscribe />} />
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/subscribe" element={<Subscribe />} />
 
+          {/* Protéger les routes à l'intérieur de PrivateRoutes */}
+          <Route element={<PrivateRoutes />}>
             <Route
               path="/"
               element={
@@ -30,10 +35,26 @@ function App() {
                 </Layout>
               }
             />
-          </Routes>
-        </AuthProvider>
-      </Router>
-    </>
+             <Route
+              path="/students"
+              element={
+                <Layout>
+                  <Students />
+                </Layout>
+              }
+            />
+             <Route
+              path="/student/:id"
+              element={
+                <Layout>
+                  <StudentDetail />
+                </Layout>
+              }
+            />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }
 

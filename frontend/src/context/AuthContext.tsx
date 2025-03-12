@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND
 
   useEffect(() => {
     // Simulate checking for existing session
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch(`${backendUrl}/api/auth/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -46,11 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       const datas = await response.json();
       setUser(datas.user);
-      console.log(datas);
-      console.log(JSON.stringify({
-        email: email,
-        password1: password,
-      }));
+   
       localStorage.setItem("user", JSON.stringify(datas.user));
       navigate("/");
     } catch (err) {
