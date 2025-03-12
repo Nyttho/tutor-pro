@@ -27,7 +27,7 @@ export default function Calendar() {
       {/* Calendrier */}
       <div className="bg-gray-100 rounded-xl shadow-sm">
         {/* Jours de la semaine */}
-        <div className="grid grid-cols-7 gap-px border-b">
+        <div className="grid grid-cols-7 gap-px border-b border-gray-300">
           {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((day) => (
             <div
               key={day}
@@ -49,7 +49,7 @@ export default function Calendar() {
           {days.map((day) => (
             <div
               key={day}
-              className={`h-32 flex items-start justify-start text-lg font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
+              className={`h-32 flex items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
                 day === currentDay ? " border-indigo-500 border-2" : "border-gray-200"
               }`}
             >

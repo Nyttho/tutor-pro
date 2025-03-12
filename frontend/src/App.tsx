@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import Subscribe from "./pages/Subscribe";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
-import PrivateRoutes from "./components/PrivateRoutes"; // Assurez-vous d'importer PrivateRoutes
+import Students from "./pages/Students";
+import PrivateRoutes from "./components/PrivateRoutes"; 
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
               element={
                 <Layout>
                   <Calendar />
+                </Layout>
+              }
+            />
+             <Route
+              path="/students"
+              element={
+                <Layout>
+                  <Students />
                 </Layout>
               }
             />
