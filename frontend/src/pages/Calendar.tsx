@@ -11,8 +11,8 @@ export default function Calendar() {
   const prevMonth = () => {
     setMonth((prev) => {
       if (prev === 0) {
-        setYear(year - 1); // Si on est en janvier, on recule d'une année
-        return 11; // Décembre de l'année précédente
+        setYear(year - 1);
+        return 11;
       }
       return prev - 1;
     });
@@ -22,8 +22,8 @@ export default function Calendar() {
   const nextMonth = () => {
     setMonth((prev) => {
       if (prev === 11) {
-        setYear(year + 1); // Si on est en décembre, on avance d'une année
-        return 0; // Janvier de l'année suivante
+        setYear(year + 1);
+        return 0;
       }
       return prev + 1;
     });
@@ -41,28 +41,25 @@ export default function Calendar() {
   const emptyDays = Array.from({ length: adjustedFirstDay });
 
   // Nom du mois en français
-  const currentMonth = new Date(year, month).toLocaleString("fr-FR", { month: "long" });
+  const currentMonth = new Date(year, month).toLocaleString("fr-FR", {
+    month: "long",
+  });
 
   return (
     <div className="space-y-8">
       {/* En-tête */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center  mx-auto text-indigo-600">
-          {/* Flèche gauche */}
+        <div className="flex items-center mx-auto text-indigo-600">
           <button onClick={prevMonth} className="cursor-pointer">
             <ArrowBigLeft size={25} />
           </button>
-
           <h1 className="text-3xl font-bold text-gray-900 w-[400px] text-center">
             Calendrier {currentMonth} {year}
           </h1>
-
-          {/* Flèche droite */}
           <button onClick={nextMonth} className="cursor-pointer">
             <ArrowBigRight size={25} />
           </button>
         </div>
-
         <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
           Ajouter un cours
         </button>
@@ -73,7 +70,10 @@ export default function Calendar() {
         {/* Jours de la semaine */}
         <div className="grid grid-cols-7 gap-px border-b border-gray-300">
           {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((day) => (
-            <div key={day} className="px-4 py-3 text-center font-semibold text-gray-900 bg-gray-50">
+            <div
+              key={day}
+              className="px-4 py-3 text-center font-semibold text-gray-900 bg-gray-50"
+            >
               {day}
             </div>
           ))}
@@ -87,14 +87,22 @@ export default function Calendar() {
           ))}
 
           {/* Jours du mois */}
-          {days.map((day) => (
-            <div
-              key={day}
-              className={`h-32 flex items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer`}
-            >
-              {day}
-            </div>
-          ))}
+          {days.map((day) => {
+            const isToday =
+              day === today.getDate() &&
+              month === today.getMonth() &&
+              year === today.getFullYear();
+            return (
+              <div
+                key={day}
+                className={`h-32 flex items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
+                  isToday ? "border-2 border-indigo-500" : ""
+                }`}
+              >
+                {day}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
