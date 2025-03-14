@@ -39,3 +39,17 @@ export const getCourses = async (month: number, year: number, day: number | null
     console.error("Error fetching courses");
   }
 };
+
+export const getNextCourses = async (limit: number) => {
+  try {
+    const url = `${backendUrl}/api/course/next?limit=${limit}`
+    const response = await fetch(url, {
+      credentials: "include"
+    })
+    const datas = await response.json()
+    return datas
+  } catch(err) {
+
+    console.error("Error fetching courses");
+  }
+}

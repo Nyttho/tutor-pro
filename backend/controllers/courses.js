@@ -27,6 +27,26 @@ const getAllCourse = async (req, res) => {
   }
 };
 
+const getNextCourses = async (req, res) => {
+  try {
+    const userId = parseInt(req.user.id)
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: "Invalid professor ID" });
+    }
+    const {limit} = req.query
+
+    const courses = await Course.getNextCourses(userId, limit)
+
+    if (courses.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    return res.status(200).json(courses);
+  } catch (err) {
+    return res.status(500).json({error: err.message})
+  }
+}
+
 const getOneCourse = async (req, res) => {
   try {
     const userId = parseInt(req.user.id);
@@ -104,6 +124,6 @@ const createCourse = async (req, res) => {
   }
 };
 
-const courseController = { getAllCourse, getOneCourse, createCourse };
+const courseController = { getAllCourse, getOneCourse, createCourse, getNextCourses };
 
 export default courseController;

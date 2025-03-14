@@ -1,44 +1,52 @@
 import { Calendar, Users, BookOpen, TrendingUp } from "lucide-react";
 import StatItem from "../components/ui/StatItem";
 import { useState, useEffect } from "react";
-import { getStudents, getCourses } from "../utils/getStats";
+import { getStudents, getCourses, getNextCourses } from "../utils/getStats";
 import { CourseType } from "../types/CourseType";
+import CourseListElement from "../components/CourseListElement";
 
 export default function Dashboard() {
-    const [studentsNb, setStudentNb] = useState(0)
-    const [coursesNb, setCoursesNb] = useState(0)
-    const [pendingCourses, setPendingCourses] = useState(0)
-    const [monthAmount, setMonthAmount] = useState(0)
+  const [studentsNb, setStudentNb] = useState(0);
+  const [coursesNb, setCoursesNb] = useState(0);
+  const [pendingCourses, setPendingCourses] = useState(0);
+  const [monthAmount, setMonthAmount] = useState(0);
+  const [courses, setCourses] = useState<CourseType[]>([]);
 
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
 
-    useEffect(() => {
-        (async () => { 
-          try {
-            const datas = await getStudents();
-            const count = datas.length
-            if (count !== undefined) {
-              setStudentNb(count);
-            }
-            const monthCourses = await getCourses(month, year);
-            if (monthCourses !== undefined || monthCourses.length !== 0) {
-                setCoursesNb(monthCourses.length)
-                const payedCourses = monthCourses.filter((course: CourseType)=> course.status === "paid")
-                const unpayedCourses = monthCourses.length - payedCourses.length
-                setPendingCourses(unpayedCourses)
-                setMonthAmount(payedCourses.reduce((acc: number, course: CourseType) => acc + course.price, 0))
-            }
+  useEffect(() => {
+    (async () => {
+      try {
+        const students = await getStudents();
+        const count = students.length;
+        if (count !== undefined) {
+          setStudentNb(count);
+        }
+        const monthCourses = await getCourses(month, year);
+        if (monthCourses !== undefined || monthCourses.length !== 0) {
+          setCoursesNb(monthCourses.length);
+          const payedCourses = monthCourses.filter(
+            (course: CourseType) => course.status === "paid"
+          );
+          const unpayedCourses = monthCourses.length - payedCourses.length;
+          setPendingCourses(unpayedCourses);
+          setMonthAmount(
+            payedCourses.reduce(
+              (acc: number, course: CourseType) => acc + course.price,
+              0
+            )
+          );
+        }
+        const nextCourses = await getNextCourses(10)
+        setCourses(nextCourses)
+      } catch (err) {
+        console.error("Error fetching datas", err);
+      }
+    })();
+  }, []);
 
-
-          } catch (err) {
-            console.error("Error fetching datas", err);
-          }
-        })();
-      }, []);
-
-    
   const stats = [
     {
       title: "Élèves actifs",
@@ -79,6 +87,14 @@ export default function Dashboard() {
             key={index}
           />
         ))}
+      </div>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-xl font-semibold mb-4">Prochains Cours</h2>
+        <div className="space-y-4">
+          {courses.map(course => (
+            <CourseListElement course={course}/>
+          ))}
+        </div>
       </div>
     </div>
   );
