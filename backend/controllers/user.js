@@ -71,7 +71,6 @@ const createUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Password hashed successfully.");
 
     const newUser = {
       name,
