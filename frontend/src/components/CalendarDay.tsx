@@ -17,7 +17,7 @@ export default function CalendarDay({ className, day, courses }: CalendarDayProp
    <div>{day}</div>
   <div className="space-y-2 ">
      {courses.map(course => (
-      <div key={course.id} className="text-sm pl-5 ">{formatTime(course.scheduledAt)} - {course.studentName} {course.studentSurname}</div>
+      <div key={course.id} className="text-sm mx-3 bg-gray-300 py-1 px-2 rounded-xl">{formatTime(course.scheduledAt)} - {course.studentName} {course.studentSurname}</div>
      ))}
   </div>
     </div>;
