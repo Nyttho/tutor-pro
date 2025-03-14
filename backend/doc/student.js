@@ -18,7 +18,51 @@
  *                 students:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Student'
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: Unique identifier for the student
+ *                       name:
+ *                         type: string
+ *                         description: First name of the student
+ *                       surname:
+ *                         type: string
+ *                         description: Surname of the student
+ *                       address:
+ *                         type: string
+ *                         description: Address of the student
+ *                       city_id:
+ *                         type: integer
+ *                         description: ID of the city
+ *                       is_active:
+ *                         type: boolean
+ *                         description: Whether the student is active or not
+ *                       created_by:
+ *                         type: integer
+ *                         description: ID of the user who created the student
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Date and time the student was created
+ *                       email:
+ *                         type: string
+ *                         description: Email of the student
+ *                       tel:
+ *                         type: string
+ *                         description: Phone number of the student
+ *                       age:
+ *                         type: integer
+ *                         description: Age of the student
+ *                       is_deleted:
+ *                         type: boolean
+ *                         description: Whether the student has been deleted (soft delete)
+ *                       total_courses:
+ *                         type: integer
+ *                         description: Total number of courses attended by the student
+ *                       pending_courses:
+ *                         type: integer
+ *                         description: Total number of pending courses for the student
  *       404:
  *         description: No students found for the authenticated user
  *         content:
@@ -56,14 +100,58 @@
  *         required: true
  *         description: ID of the student to retrieve
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Student retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Student'
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: Unique identifier for the student
+ *                 name:
+ *                   type: string
+ *                   description: First name of the student
+ *                 surname:
+ *                   type: string
+ *                   description: Surname of the student
+ *                 address:
+ *                   type: string
+ *                   description: Address of the student
+ *                 city_id:
+ *                   type: integer
+ *                   description: ID of the city
+ *                 is_active:
+ *                   type: boolean
+ *                   description: Whether the student is active or not
+ *                 created_by:
+ *                   type: integer
+ *                   description: ID of the user who created the student
+ *                 created_at:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Date and time the student was created
+ *                 email:
+ *                   type: string
+ *                   description: Email of the student
+ *                 tel:
+ *                   type: string
+ *                   description: Phone number of the student
+ *                 age:
+ *                   type: integer
+ *                   description: Age of the student
+ *                 is_deleted:
+ *                   type: boolean
+ *                   description: Whether the student has been deleted (soft delete)
+ *                 total_courses:
+ *                   type: integer
+ *                   description: Total number of courses attended by the student
+ *                 pending_courses:
+ *                   type: integer
+ *                   description: Total number of pending courses for the student
  *       404:
  *         description: Student not found
  *         content:
@@ -98,54 +186,314 @@
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     Student:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           description: Unique identifier for the student
- *         name:
- *           type: string
- *           description: First name of the student
- *         surname:
- *           type: string
- *           description: Surname of the student
- *         address:
- *           type: string
- *           description: Address of the student
- *         cityId:
- *           type: integer
- *           description: ID of the city
- *         createdBy:
- *           type: integer
- *           description: ID of the user who created the student
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: Date and time the student was created
- *         isActive:
- *           type: boolean
- *           description: Whether the student is active or not
- *         email:
- *           type: string
- *           format: email
- *           description: Email of the student
- *         tel:
- *           type: string
- *           description: Phone number of the student
- *         age:
- *           type: integer
- *           description: Age of the student
- *         isDeleted:
- *           type: boolean
- *           description: Indicates if the student is deleted
- *         totalCourses:
- *           type: integer
- *           description: Total number of courses taken by the student
- *         pendingCourses:
- *           type: integer
- *           description: Number of pending courses for the student
+ * /api/student:
+ *   post:
+ *     summary: Create a new student
+ *     description: This endpoint creates a new student in the database.
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: First name of the student.
+ *               surname:
+ *                 type: string
+ *                 description: Surname of the student.
+ *               address:
+ *                 type: string
+ *                 description: Address of the student.
+ *               city:
+ *                 type: string
+ *                 description: City where the student lives.
+ *               postCode:
+ *                 type: string
+ *                 description: Postal code of the city.
+ *               country:
+ *                 type: string
+ *                 description: Country where the student lives.
+ *               email:
+ *                 type: string
+ *                 description: Email address of the student.
+ *               tel:
+ *                 type: string
+ *                 description: Phone number of the student.
+ *               age:
+ *                 type: integer
+ *                 description: Age of the student.
+ *             required:
+ *               - name
+ *               - surname
+ *               - address
+ *               - city
+ *               - postCode
+ *               - country
+ *               - age
+ *     responses:
+ *       201:
+ *         description: Student created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Student Created Successfully
+ *                 student:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: Unique identifier for the student
+ *                     name:
+ *                       type: string
+ *                       description: First name of the student
+ *                     surname:
+ *                       type: string
+ *                       description: Surname of the student
+ *                     address:
+ *                       type: string
+ *                       description: Address of the student
+ *                     city_id:
+ *                       type: integer
+ *                       description: ID of the city
+ *                     is_active:
+ *                       type: boolean
+ *                       description: Whether the student is active
+ *                     created_by:
+ *                       type: integer
+ *                       description: ID of the user who created the student
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Date and time the student was created
+ *                     email:
+ *                       type: string
+ *                       description: Email of the student
+ *                     tel:
+ *                       type: string
+ *                       description: Phone number of the student
+ *                     age:
+ *                       type: integer
+ *                       description: Age of the student
+ *       400:
+ *         description: Bad Request. Some required fields are missing or invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Those fields are required : name, surname, address"
+ *       409:
+ *         description: Conflict. The student already exists in the system.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Student already exists"
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An unexpected error occurred."
  */
 
+/**
+ * @swagger
+ * /api/student/{id}:
+ *   put:
+ *     summary: Update a student's information
+ *     description: Update an existing student's details. Only the creator of the student can perform this action.
+ *     tags: 
+ *       - Students
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the student to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "John"
+ *               surname:
+ *                 type: string
+ *                 example: "Doe"
+ *               address:
+ *                 type: string
+ *                 example: "123 Main St"
+ *               city:
+ *                 type: string
+ *                 example: "Paris"
+ *               postCode:
+ *                 type: string
+ *                 example: "75000"
+ *               country:
+ *                 type: string
+ *                 example: "France"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "johndoe@example.com"
+ *               tel:
+ *                 type: string
+ *                 example: "+33612345678"
+ *               age:
+ *                 type: integer
+ *                 example: 25
+ *     responses:
+ *       200:
+ *         description: Student updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Student updated successfully"
+ *                 student:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       example: "John"
+ *                     surname:
+ *                       type: string
+ *                       example: "Doe"
+ *                     address:
+ *                       type: string
+ *                       example: "123 Main St"
+ *                     city_id:
+ *                       type: integer
+ *                       example: 5
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: "johndoe@example.com"
+ *                     tel:
+ *                       type: string
+ *                       example: "+33612345678"
+ *                     age:
+ *                       type: integer
+ *                       example: 25
+ *       400:
+ *         description: Invalid input or missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Please enter valid information"
+ *       403:
+ *         description: Forbidden - User is not allowed to update this student
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "You are not allowed to update this student"
+ *       404:
+ *         description: Student not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Student not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+
+/**
+ * @swagger
+ * /api/student/{id}:
+ *   delete:
+ *     summary: Delete a student (soft delete)
+ *     description: Marks a student as deleted by setting is_deleted to true. Only the student creator can delete them.
+ *     tags:
+ *       - Students
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the student to delete
+ *     responses:
+ *       200:
+ *         description: Student deleted successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Student deleted successfully"
+ *       400:
+ *         description: Student is already deleted
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Student is already deleted"
+ *       403:
+ *         description: User not allowed to delete this student
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "You are not allowed to delete this student"
+ *       404:
+ *         description: Student not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Student not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Failed to delete student"
+ */
