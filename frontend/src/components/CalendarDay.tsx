@@ -13,11 +13,12 @@ const formatTime = (dateString: Date) => {
 };
 
 export default function CalendarDay({ className, day, courses }: CalendarDayProps) {
-  console.log(courses);
   return <div className={className}>
    <div>{day}</div>
-   {courses.map(course => (
-    <div key={course.id} className="text-center w-full text-sm">{formatTime(course.scheduledAt)} - {course.studentName} {course.studentSurname}</div>
-   ))}
+  <div className="space-y-2 ">
+     {courses.map(course => (
+      <div key={course.id} className="text-sm pl-5 ">{formatTime(course.scheduledAt)} - {course.studentName} {course.studentSurname}</div>
+     ))}
+  </div>
     </div>;
 }

@@ -113,7 +113,7 @@ useEffect(() => {
               day === today.getDate() &&
               month === today.getMonth() &&
               year === today.getFullYear();
-            const className = `h-32 flex flex-col items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
+            const className = `h-32 flex flex-col items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer overflow-y-auto ${
               isToday ? "border-2 border-indigo-500" : ""
             }`;
             const dayCourses = getCoursesForDay(day);
