@@ -50,13 +50,13 @@
  *                       type: string
  *                       format: email
  *                       example: "test@example.com"
- *                     is_admin:
+ *                     isAdmin:
  *                       type: boolean
  *                       example: false
- *                     city_id:
+ *                     cityId:
  *                       type: integer
  *                       example: 1swaggerdoc
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: "2025-02-10T17:00:56.529Z"

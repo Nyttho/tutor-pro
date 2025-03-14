@@ -26,24 +26,24 @@
  *                   content:
  *                     type: string
  *                     example: "Description of the lesson"
- *                   subject_id:
+ *                   subjectId:
  *                     type: integer
  *                     example: 1
- *                   user_id:
+ *                   userId:
  *                     type: integer
  *                     example: 2
- *                   created_at:
+ *                   createdAt:
  *                     type: string
  *                     format: date-time
  *                     example: "2025-02-17T14:26:53.637Z"
- *                   created_by:
+ *                   createdBy:
  *                     type: integer
  *                     example: 2
- *                   file_id:
+ *                   fileId:
  *                     type: integer
  *                     nullable: true
  *                     example: 2
- *                   link_id:
+ *                   linkId:
  *                     type: integer
  *                     nullable: true
  *                     example: 5
@@ -103,24 +103,24 @@
  *                 content:
  *                   type: string
  *                   example: "Description of the lesson"
- *                 subject_id:
+ *                 subjectId:
  *                   type: integer
  *                   example: 1
- *                 user_id:
+ *                 userId:
  *                   type: integer
  *                   example: 2
- *                 created_at:
+ *                 createdAt:
  *                   type: string
  *                   format: date-time
  *                   example: "2025-02-17T14:26:53.637Z"
- *                 created_by:
+ *                 createdBy:
  *                   type: integer
  *                   example: 2
- *                 file_id:
+ *                 fileId:
  *                   type: integer
  *                   nullable: true
  *                   example: 2
- *                 link_id:
+ *                 linkId:
  *                   type: integer
  *                   nullable: true
  *                   example: 5
@@ -215,24 +215,24 @@
  *                     content:
  *                       type: string
  *                       example: "A detailed lesson on irregular verbs."
- *                     subject_id:
+ *                     subjectId:
  *                       type: integer
  *                       example: 1
- *                     user_id:
+ *                     userId:
  *                       type: integer
  *                       example: 2
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: "2025-02-17T14:26:53.637Z"
- *                     created_by:
+ *                     createdBy:
  *                       type: integer
  *                       example: 2
- *                     file_id:
+ *                     fileId:
  *                       type: integer
  *                       nullable: true
  *                       example: 5
- *                     link_id:
+ *                     linkId:
  *                       type: integer
  *                       nullable: true
  *                       example: 7
@@ -335,24 +335,24 @@
  *                     content:
  *                       type: string
  *                       example: "Updated description for the lesson on irregular verbs."
- *                     subject_id:
+ *                     subjectId:
  *                       type: integer
  *                       example: 1
- *                     user_id:
+ *                     userId:
  *                       type: integer
  *                       example: 2
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: "2025-02-17T14:26:53.637Z"
- *                     created_by:
+ *                     createdBy:
  *                       type: integer
  *                       example: 2
- *                     file_id:
+ *                     fileId:
  *                       type: integer
  *                       nullable: true
  *                       example: 3
- *                     link_id:
+ *                     linkId:
  *                       type: integer
  *                       nullable: true
  *                       example: 4

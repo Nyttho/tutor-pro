@@ -29,13 +29,13 @@
  *                         type: string
  *                         format: email
  *                         description: Email address of the user.
- *                       is_admin:
+ *                       isAdmin:
  *                         type: boolean
  *                         description: Indicates whether the user is an administrator.
- *                       city_id:
+ *                       cityId:
  *                         type: integer
  *                         description: Identifier of the user's city.
- *                       created_at:
+ *                       createdAt:
  *                         type: string
  *                         format: date-time
  *                         description: Timestamp of when the user was created.
@@ -81,13 +81,13 @@
  *                       type: string
  *                       format: email
  *                       description: Email address of the user.
- *                     is_admin:
+ *                     isAdmin:
  *                       type: boolean
  *                       description: Indicates whether the user is an administrator.
- *                     city_id:
+ *                     cityId:
  *                       type: integer
  *                       description: Identifier of the user's city.
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       description: Timestamp of when the user was created.
@@ -168,13 +168,13 @@
  *                     email:
  *                       type: string
  *                       example: johndoe@example.com
- *                     is_admin:
+ *                     isAdmin:
  *                       type: boolean
  *                       example: false
- *                     city_id:
+ *                     cityId:
  *                       type: integer
  *                       example: 101
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: 2025-02-11T17:55:24Z
@@ -281,13 +281,13 @@
  *                     email:
  *                       type: string
  *                       example: johndoe@example.com
- *                     is_admin:
+ *                     isAdmin:
  *                       type: boolean
  *                       example: false
- *                     city_id:
+ *                     cityId:
  *                       type: integer
  *                       example: 101
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: 2025-02-11T17:55:24Z

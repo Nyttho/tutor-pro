@@ -25,14 +25,14 @@
  *                       name:
  *                         type: string
  *                         example: irregular verbs
- *                       category_id:
+ *                       categoryId:
  *                         type: integer
  *                         example: 2
- *                       created_at:
+ *                       createdAt:
  *                         type: string
  *                         format: date-time
  *                         example: 2025-02-13T14:26:58.612Z
- *                       created_by:
+ *                       createdBy:
  *                         type: integer
  *                         example: 8
  *       404:
@@ -89,14 +89,14 @@
  *                     name:
  *                       type: string
  *                       example: irregular verbs
- *                     category_id:
+ *                     categoryId:
  *                       type: integer
  *                       example: 2
- *                     created_at:
+ *                     createdAt:
  *                       type: string
  *                       format: date-time
  *                       example: 2025-02-13T14:26:58.612Z
- *                     created_by:
+ *                     createdBy:
  *                       type: integer
  *                       example: 8
  *       404:
@@ -167,10 +167,10 @@
  *                     name:
  *                       type: string
  *                       example: "Mathematics"
- *                     category_id:
+ *                     categoryId:
  *                       type: string
  *                       example: "67890"
- *                     created_by:
+ *                     createdBy:
  *                       type: string
  *                       example: "54321"
  *       400:
@@ -251,10 +251,10 @@
  *                     name:
  *                       type: string
  *                       example: "Mathematics"
- *                     category_id:
+ *                     categoryId:
  *                       type: string
  *                       example: "67890"
- *                     created_by:
+ *                     createdBy:
  *                       type: string
  *                       example: "54321"
  *       400:
@@ -343,7 +343,7 @@
  *                     name:
  *                       type: string
  *                       example: "Physics"
- *                     category_id:
+ *                     categoryId:
  *                       type: string
  *                       example: "67890"
  *       400:
