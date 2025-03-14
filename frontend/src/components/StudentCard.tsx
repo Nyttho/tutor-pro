@@ -29,7 +29,6 @@ export default function StudentCard({ student }: StudentCardProps) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              
             }}
             className="text-gray-400 hover:text-gray-600"
           >
@@ -41,13 +40,13 @@ export default function StudentCard({ student }: StudentCardProps) {
             <div>
               <div className="text-gray-500">Total des cours</div>
               <div className="mt-1 text-xl font-semibold text-gray-900">
-                {student.courseCount}
+                {student.totalCourses}
               </div>
             </div>
             <div>
               <div className="text-gray-500">Paiements en attente</div>
               <div className="mt-1 text-xl font-semibold text-red-600">
-                {student.pendingPayments}
+                {student.pendingCourses}
               </div>
             </div>
           </div>

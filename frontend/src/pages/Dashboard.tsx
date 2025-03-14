@@ -39,8 +39,8 @@ export default function Dashboard() {
             )
           );
         }
-        const nextCourses = await getNextCourses(10)
-        setCourses(nextCourses)
+        const nextCourses = await getNextCourses(10);
+        setCourses(nextCourses);
       } catch (err) {
         console.error("Error fetching datas", err);
       }
@@ -91,8 +91,8 @@ export default function Dashboard() {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-xl font-semibold mb-4">Prochains Cours</h2>
         <div className="space-y-4">
-          {courses.map(course => (
-            <CourseListElement course={course}/>
+          {courses.map((course) => (
+            <CourseListElement course={course} key={course.id} />
           ))}
         </div>
       </div>

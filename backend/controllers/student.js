@@ -27,11 +27,16 @@ const getOneStudent = async (req, res) => {
     const userId = parseInt(req.user.id);
     const studentId = parseInt(req.params.id);
 
+    
+
     const student = await Student.getById(studentId);
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
     }
+
+    console.log("prof id: ", userId);
+    console.log("stud id: ", student);
 
     if (student.createdBy !== userId) {
       return res

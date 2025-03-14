@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  StudentType,
-  StudentWithCourseCountAndPayments,
-} from "../types/StudentType";
-import { CourseType } from "../types/CourseType";
-import { getStudents, getCourses } from "../utils/getStats";
+import { StudentWithCourseCountAndPayments } from "../types/StudentType";
+import { getStudents } from "../utils/getStats"; // Assurez-vous que getStudents gère bien le calcul du nombre de cours et des paiements
 import StudentCard from "../components/StudentCard";
 import { Plus } from "lucide-react";
 
@@ -12,49 +8,23 @@ export default function Students() {
   const [students, setStudents] = useState<StudentWithCourseCountAndPayments[]>(
     []
   );
+  const today = new Date();
+  const currentMonth = today.getMonth() + 1; // Mois courant (1-12)
+  const currentYear = today.getFullYear(); // Année actuelle
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const stud: StudentType[] = await getStudents();
-        const courses: CourseType[] = await getCourses();
-
-        console.log("Students:", stud);
-        console.log("Courses:", courses);
-
-        const getStudentCourseCount = (studentId: number) => {
-          return courses.filter(
-            (course: CourseType) => course.studentId === studentId
-          ).length;
-        };
-
-        const getStudentPendingPayments = (studentId: number) => {
-          return courses.filter(
-            (course: CourseType) =>
-              course.studentId === studentId && course.status === "pending"
-          ).length;
-        };
-
-        const studentsWithCourseCountAndPayments = stud.map(
-          (student: StudentType) => {
-            const courseCount = getStudentCourseCount(student.id);
-            const pendingPayments = getStudentPendingPayments(student.id);
-            return {
-              ...student,
-              courseCount,
-              pendingPayments,
-            };
-          }
-        );
-
-        setStudents(studentsWithCourseCountAndPayments);
+        // Récupération des étudiants avec les calculs
+        const studentsWithCourses = await getStudents();
+        setStudents(studentsWithCourses);
       } catch (err) {
-        console.error("Error fetching students or courses", err);
+        console.error("Error fetching students", err);
       }
     };
 
     fetchData();
-  }, []);
+  }, [currentMonth, currentYear]);
 
   return (
     <div className="space-y-8">
@@ -67,7 +37,7 @@ export default function Students() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {students.length === 0 ? (
-          <p>No students available</p> // Afficher un message si aucun étudiant
+          <p>Aucun élève disponible</p> // Afficher un message si aucun étudiant
         ) : (
           students.map((s) => <StudentCard student={s} key={s.id} />)
         )}

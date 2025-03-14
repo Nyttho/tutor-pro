@@ -1,12 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getStudentById, getCourses } from "../utils/getStats";
+import { getStudentById } from "../utils/getStats";
 import { useEffect, useState } from "react";
-import {
-  StudentType,
-  StudentWithCourseCountAndPayments,
-} from "../types/StudentType";
-import { CourseType } from "../types/CourseType";
+import { StudentWithCourseCountAndPayments } from "../types/StudentType";
 import InfoCard from "../components/InfoCard";
 import StatCard from "../components/StatCard";
 import FastActionCard from "../components/FastActionCard";
@@ -15,35 +11,14 @@ export default function StudentDetail() {
   const { id } = useParams<{ id: string }>();
   const [student, setStudent] =
     useState<StudentWithCourseCountAndPayments | null>(null);
-  const [courses, setCourses] = useState<CourseType[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const stud: StudentType = await getStudentById(id);
-        const allCourses: CourseType[] = await getCourses(); // Récupérer tous les cours
-
-        // Filtrer les cours pour cet étudiant
-        const studentCourses = allCourses.filter(
-          (course) => course.studentId === stud.id
+        const stud: StudentWithCourseCountAndPayments = await getStudentById(
+          id
         );
-
-        // Calculer le nombre de cours et le nombre de paiements en attente pour l'étudiant
-        const courseCount = studentCourses.length;
-        const pendingPayments = studentCourses.filter(
-          (course) => course.status === "pending"
-        ).length;
-
-        // Créer un objet avec les informations de l'étudiant et de ses cours
-        const studentWithDetails: StudentWithCourseCountAndPayments = {
-          ...stud,
-          courseCount,
-          pendingPayments,
-        };
-
-        // Mettre à jour l'état de l'étudiant
-        setStudent(studentWithDetails);
-        setCourses(studentCourses); // Mettre à jour l'état des cours pour cet étudiant
+        setStudent(stud);
       } catch (err) {
         console.error("Error fetching student or courses", err);
       }
@@ -70,7 +45,10 @@ export default function StudentDetail() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <InfoCard student={student} />
-        <StatCard courses={courses} />
+        <StatCard
+          coursesCount={student.totalCourses}
+          coursesPending={student.pendingCourses}
+        />
         <FastActionCard />
       </div>
     </div>
