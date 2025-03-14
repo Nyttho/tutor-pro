@@ -26,17 +26,13 @@ export const getStudentById = async (id: string | undefined) => {
   }
 };
 
-export const getCourses = async () => {
+export const getCourses = async (month: number, year: number, day: number | null =null) => {
   try {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const response = await fetch(
-      `${backendUrl}/api/course?year=${year}&month=${month}`,
-      {
-        credentials: "include",
-      }
-    );
+    let url = `${backendUrl}/api/course?year=${year}&month=${month}`;
+    if(day) url += `&day=${day}`
+    const response = await fetch(url, {
+      credentials: "include",
+    });
     const datas = await response.json();
     return datas;
   } catch (err) {

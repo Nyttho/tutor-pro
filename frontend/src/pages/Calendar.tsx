@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import CalendarDay from "../components/CalendarDay";
+import { getCourses } from "../utils/getStats";
+import { CourseType } from "../types/CourseType";
 
 export default function Calendar() {
   // État pour stocker le mois et l'année affichés
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth()); // Index du mois (0 = Janvier)
   const [year, setYear] = useState(today.getFullYear());
+  const [courses, setCourses] = useState<CourseType[]>([])
 
+useEffect(() => {
+  (async () => {
+    const fetchedCourses = await getCourses(month + 1, year)
+    setCourses(fetchedCourses)
+  })()
+}, [month])
   // Fonction pour aller au mois précédent
   const prevMonth = () => {
     setMonth((prev) => {
@@ -44,6 +54,17 @@ export default function Calendar() {
   const currentMonth = new Date(year, month).toLocaleString("fr-FR", {
     month: "long",
   });
+
+   // Fonction pour filtrer les cours pour un jour donné
+   const getCoursesForDay = (day: number) => {
+    const dayStart = new Date(year, month, day, 0, 0, 0, 0).toISOString();
+    const dayEnd = new Date(year, month, day, 23, 59, 59, 999).toISOString();
+    return courses.filter(
+      (course) =>
+        new Date(course.scheduledAt).toISOString() >= dayStart &&
+        new Date(course.scheduledAt).toISOString() <= dayEnd
+    );
+  };
 
   return (
     <div className="space-y-8">
@@ -92,16 +113,11 @@ export default function Calendar() {
               day === today.getDate() &&
               month === today.getMonth() &&
               year === today.getFullYear();
-            return (
-              <div
-                key={day}
-                className={`h-32 flex items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
-                  isToday ? "border-2 border-indigo-500" : ""
-                }`}
-              >
-                {day}
-              </div>
-            );
+            const className = `h-32 flex flex-col items-start justify-start text-md text-gray-600 font-semibold p-2 bg-white hover:bg-gray-200 cursor-pointer ${
+              isToday ? "border-2 border-indigo-500" : ""
+            }`;
+            const dayCourses = getCoursesForDay(day);
+            return <CalendarDay className={className} day={day} key={day} courses={dayCourses}/>;
           })}
         </div>
       </div>

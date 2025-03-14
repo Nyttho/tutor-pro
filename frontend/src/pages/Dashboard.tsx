@@ -10,6 +10,10 @@ export default function Dashboard() {
     const [pendingCourses, setPendingCourses] = useState(0)
     const [monthAmount, setMonthAmount] = useState(0)
 
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = today.getMonth() + 1
+
     useEffect(() => {
         (async () => { 
           try {
@@ -18,7 +22,7 @@ export default function Dashboard() {
             if (count !== undefined) {
               setStudentNb(count);
             }
-            const monthCourses = await getCourses();
+            const monthCourses = await getCourses(month, year);
             if (monthCourses !== undefined || monthCourses.length !== 0) {
                 setCoursesNb(monthCourses.length)
                 const payedCourses = monthCourses.filter((course: CourseType)=> course.status === "paid")

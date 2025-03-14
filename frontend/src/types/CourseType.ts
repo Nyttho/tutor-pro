@@ -7,4 +7,6 @@ export interface CourseType {
     price: number;
     status: "paid" | "pending";
     duration: number;
+    studentName: string;
+    studentSurname: String;
 }
