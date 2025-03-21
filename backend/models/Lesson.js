@@ -17,12 +17,14 @@ class Lesson extends Crud {
         users.name AS user_name, 
         subjects.name AS subject, 
         files.file_url AS file_path, 
-        links.link AS link_url
+        links.link AS link_url,
+        c.name AS category_name 
       FROM ${this.tableName}
       LEFT JOIN users ON lessons.user_id = users.id
       LEFT JOIN subjects ON lessons.subject_id = subjects.id
       LEFT JOIN files ON lessons.file_id = files.id
       LEFT JOIN links ON lessons.link_id = links.id
+      LEFT JOIN categories c ON subjects.category_id = c.id
       WHERE lessons.user_id = $1
     `;
 
@@ -44,12 +46,14 @@ class Lesson extends Crud {
         users.name AS user_name, 
         subjects.name AS subject, 
         files.file_url AS file_path, 
-        links.link AS link_url
+        links.link AS link_url,
+        c.name AS category_name
       FROM ${this.tableName}
       LEFT JOIN users ON lessons.user_id = users.id
       LEFT JOIN subjects ON lessons.subject_id = subjects.id
       LEFT JOIN files ON lessons.file_id = files.id
       LEFT JOIN links ON lessons.link_id = links.id
+      LEFT JOIN categories c ON subjects.category_id = c.id
       WHERE lessons.id = $1;
     `;
 

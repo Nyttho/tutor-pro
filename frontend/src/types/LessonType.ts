@@ -1,11 +1,11 @@
 export interface LessonType {
-  id: number;
+  id: 1;
   name: string;
   content: string;
-  subject: string;
-  userId: number;
-  createdAt: string;
   createdBy: number;
-  fileId: number | null;
-  linkId: number | null;
+  userName: string;
+  subject: string;
+  filePath: string | null;
+  linkUrl: string | null;
+  categoryName: string;
 }

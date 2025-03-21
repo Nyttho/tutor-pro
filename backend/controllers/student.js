@@ -10,13 +10,13 @@ const getAllStudents = async (req, res) => {
   try {
     const userId = parseInt(req.user.id);
 
-    const students = await Student.getByProfessorId(userId)
+    const students = await Student.getByProfessorId(userId);
 
     if (students.length === 0) {
       return res.status(404).json({ error: "Students not found" });
     }
 
-    res.status(200).json( students );
+    res.status(200).json(students);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -27,16 +27,11 @@ const getOneStudent = async (req, res) => {
     const userId = parseInt(req.user.id);
     const studentId = parseInt(req.params.id);
 
-    
-
     const student = await Student.getById(studentId);
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
     }
-
-    console.log("prof id: ", userId);
-    console.log("stud id: ", student);
 
     if (student.createdBy !== userId) {
       return res
@@ -175,12 +170,10 @@ const updateStudent = async (req, res) => {
       age: age || student.age,
     });
 
-    return res
-      .status(200)
-      .json({
-        message: "Student updated successfully",
-        student: updatedStudent,
-      });
+    return res.status(200).json({
+      message: "Student updated successfully",
+      student: updatedStudent,
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

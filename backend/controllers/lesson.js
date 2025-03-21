@@ -37,7 +37,7 @@ const getOneLesson = async (req, res) => {
       return res.status(403).json({ error: "Unauthorized access" });
     }
 
-    return res.status(200).json({ lesson });
+    return res.status(200).json(lesson);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

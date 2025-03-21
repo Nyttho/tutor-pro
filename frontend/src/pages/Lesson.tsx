@@ -5,38 +5,15 @@ import { LessonType } from "../types/LessonType";
 import { getLessons } from "../utils/lessons";
 
 export default function Lesson() {
-  // const mockLesson = [
-  //   {
-  //     id: 2,
-  //     name: "list of irregular verbs",
-  //     content: "description de la leçon",
-  //     subject: "english",
-  //     userId: 2,
-  //     createdAt: "2025-02-17T14:18:40.787Z",
-  //     createdBy: 2,
-  //     fileId: 1,
-  //     linkId: 4,
-  //   },
-  //   {
-  //     id: 13,
-  //     name: "pentatonics",
-  //     content: "description de la leçon",
-  //     subject: "guitar",
-  //     userId: 2,
-  //     createdAt: "2025-03-11T16:40:45.399Z",
-  //     createdBy: 2,
-  //     fileId: null,
-  //     linkId: 15,
-  //   },
-  // ];
-
   const [lessons, setLessons] = useState<LessonType[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const fetchedLesson: LessonType[] = await getLessons();
-        setLessons(fetchedLesson);
+        const fetchedLessons: LessonType[] = await getLessons();
+        if (fetchedLessons.length > 0) {
+          setLessons(fetchedLessons);
+        }
       } catch (err) {
         console.error("Error fetching lessons", err);
       }
