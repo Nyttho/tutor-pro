@@ -7,8 +7,8 @@ const getAllUsers = async (req, res) => {
   try {
     const users = await User.getAll();
 
-    if(users.length === 0) {
-      return res.status(404).json({error: "No user found"})
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No user found" });
     }
     const cleanedUser = users.map(({ password, ...rest }) => rest);
 
@@ -121,11 +121,9 @@ const updateUser = async (req, res) => {
 
     const updatedUser = await User.update(userId, fieldsToUpdate);
 
-    const {password, ...user} = updatedUser
+    const { password, ...user } = updatedUser;
 
-    return res
-      .status(200)
-      .json({ message: "User updated successfully", user });
+    return res.status(200).json({ message: "User updated successfully", user });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -156,5 +154,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const userController = { getAllUsers, getOneUser, createUser,updateUser, deleteUser };
+const userController = {
+  getAllUsers,
+  getOneUser,
+  createUser,
+  updateUser,
+  deleteUser,
+};
 export default userController;

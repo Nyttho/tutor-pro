@@ -7,7 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Students from "./pages/Students";
 import StudentDetail from "./pages/StudentDetail";
-import PrivateRoutes from "./components/PrivateRoutes"; 
+import Lesson from "./pages/Lesson";
+import PrivateRoutes from "./components/PrivateRoutes";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
                 </Layout>
               }
             />
-             <Route
+            <Route
               path="/students"
               element={
                 <Layout>
@@ -43,11 +44,19 @@ function App() {
                 </Layout>
               }
             />
-             <Route
+            <Route
               path="/student/:id"
               element={
                 <Layout>
                   <StudentDetail />
+                </Layout>
+              }
+            />
+            <Route
+              path="/lessons"
+              element={
+                <Layout>
+                  <Lesson />
                 </Layout>
               }
             />

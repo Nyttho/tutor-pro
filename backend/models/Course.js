@@ -62,10 +62,10 @@ class Course extends Crud {
       ORDER BY scheduled_at ASC
       LIMIT ${limit};
     `;
-    const params = professorId
+    const params = professorId;
     try {
       const result = await pool.query(query, [params]);
-      return result.rows.map(convertKeysToCamel); // Conversion des clés en camelCase si nécessaire
+      return result.rows.map(convertKeysToCamel);
     } catch (err) {
       console.error("Erreur lors de l'exécution de la requête", err);
       throw new Error("Échec de la requête à la base de données");

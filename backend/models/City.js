@@ -11,9 +11,8 @@ class City extends Crud {
     const query = `SELECT * FROM ${this.tableName} WHERE country = $1 AND post_code = $2;`;
     const result = await pool.query(query, [country, postCode]);
 
-    return convertKeysToCamel(result.rows[0]); 
-}
-
+    return result.rows[0] ? convertKeysToCamel(result.rows[0]) : null;
+  }
 }
 
 export default new City();
