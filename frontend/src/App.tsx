@@ -8,6 +8,7 @@ import Calendar from "./pages/Calendar";
 import Students from "./pages/Students";
 import StudentDetail from "./pages/StudentDetail";
 import Lesson from "./pages/Lesson";
+import LessonDetail from "./pages/LessonDetail";
 import PrivateRoutes from "./components/PrivateRoutes";
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/subscribe" element={<Subscribe />} />
 
-          {/* Protéger les routes à l'intérieur de PrivateRoutes */}
+          {/* routes protégées */}
           <Route element={<PrivateRoutes />}>
             <Route
               path="/"
@@ -57,6 +58,14 @@ function App() {
               element={
                 <Layout>
                   <Lesson />
+                </Layout>
+              }
+            />
+            <Route
+              path="/lessons/:id"
+              element={
+                <Layout>
+                  <LessonDetail />
                 </Layout>
               }
             />

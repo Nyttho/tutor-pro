@@ -10,16 +10,13 @@ const getAllLessons = async (req, res) => {
     const userId = parseInt(req.user.id, 10);
 
     // Récupération des leçons créées par l'utilisateur
-    const lessons = await Lesson.getAll();
-    const userLessons = lessons.filter(
-      (lesson) => lesson.createdBy === userId
-    );
+    const lessons = await Lesson.getAll(userId);
 
-    if (userLessons.length === 0) {
+    if (lessons.length === 0) {
       return res.status(404).json({ error: "No lessons found for this user" });
     }
 
-    return res.status(200).json(userLessons);
+    return res.status(200).json(lessons);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
