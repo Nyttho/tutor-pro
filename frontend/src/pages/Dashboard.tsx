@@ -1,7 +1,8 @@
 import { Calendar, Users, BookOpen, TrendingUp } from "lucide-react";
 import StatItem from "../components/ui/StatItem";
 import { useState, useEffect } from "react";
-import { getStudents, getCourses, getNextCourses } from "../services/getStats";
+import { getStudents} from "../services/studentService";
+import {getCourses, getNextCourses} from "../services/courseService"
 import { CourseType } from "../types/CourseType";
 import CourseListElement from "../components/CourseListElement";
 
