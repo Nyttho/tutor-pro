@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { LessonType } from "../types/LessonType";
-import { getLessonById } from "../utils/lessons";
+import { getLessonById } from "../services/lessonSerice";
 
 export default function LessonDetail() {
   const { id } = useParams<{ id: string }>();

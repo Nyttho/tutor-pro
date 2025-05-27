@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StudentWithCourseCountAndPayments } from "../types/StudentType";
-import { getStudents } from "../utils/getStats"; // Assurez-vous que getStudents gère bien le calcul du nombre de cours et des paiements
+import { getStudents } from "../services/getStats"; // Assurez-vous que getStudents gère bien le calcul du nombre de cours et des paiements
 import StudentCard from "../components/StudentCard";
 import { Plus } from "lucide-react";
 

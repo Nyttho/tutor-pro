@@ -1,0 +1,29 @@
+const backendUrl = import.meta.env.VITE_BACKEND;
+
+export const getCourses = async (month: number, year: number, day: number | null =null) => {
+  try {
+    let url = `${backendUrl}/api/course?year=${year}&month=${month}`;
+    if(day) url += `&day=${day}`
+    const response = await fetch(url, {
+      credentials: "include",
+    });
+    const datas = await response.json();
+    return datas;
+  } catch (err) {
+    console.error("Error fetching courses");
+  }
+};
+
+export const getNextCourses = async (limit: number) => {
+  try {
+    const url = `${backendUrl}/api/course/next?limit=${limit}`
+    const response = await fetch(url, {
+      credentials: "include"
+    })
+    const datas = await response.json()
+    return datas
+  } catch(err) {
+
+    console.error("Error fetching courses");
+  }
+}

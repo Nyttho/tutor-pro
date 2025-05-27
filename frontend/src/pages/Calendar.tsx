@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import CalendarDay from "../components/CalendarDay";
-import { getCourses } from "../utils/getStats";
+import { getCourses } from "../services/getStats";
 import { CourseType } from "../types/CourseType";
 
 export default function Calendar() {

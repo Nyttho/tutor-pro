@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LessonCard from "../components/LessonCard";
 import { Plus } from "lucide-react";
 import { LessonType } from "../types/LessonType";
-import { getLessons } from "../utils/lessons";
+import { getLessons } from "../services/lessonSerice";
 
 export default function Lesson() {
   const [lessons, setLessons] = useState<LessonType[]>([]);

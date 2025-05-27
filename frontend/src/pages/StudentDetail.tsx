@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getStudentById } from "../utils/getStats";
+import { getStudentById } from "../services/getStats";
 import { useEffect, useState } from "react";
 import { StudentWithCourseCountAndPayments } from "../types/StudentType";
 import InfoCard from "../components/InfoCard";

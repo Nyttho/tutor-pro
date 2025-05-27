@@ -1,7 +1,7 @@
 import { Calendar, Users, BookOpen, TrendingUp } from "lucide-react";
 import StatItem from "../components/ui/StatItem";
 import { useState, useEffect } from "react";
-import { getStudents, getCourses, getNextCourses } from "../utils/getStats";
+import { getStudents, getCourses, getNextCourses } from "../services/getStats";
 import { CourseType } from "../types/CourseType";
 import CourseListElement from "../components/CourseListElement";
 
@@ -78,13 +78,13 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
+        {stats.map((stat) => (
           <StatItem
             icon={stat?.icon}
             title={stat?.title}
             color={stat?.color}
             value={stat?.value}
-            key={index}
+            key={stat?.title}
           />
         ))}
       </div>
