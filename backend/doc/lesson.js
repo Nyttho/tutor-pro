@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /lessons:
+ * /api/lessons:
  *   get:
  *     summary: Retrieve all lessons created by the authenticated user
  *     tags:
@@ -71,7 +71,7 @@
 
 /**
  * @swagger
- * /lessons/{id}:
+ * /api/lessons/{id}:
  *   get:
  *     summary: Retrieve a specific lesson created by the authenticated user
  *     tags:
@@ -158,7 +158,7 @@
 
 /**
  * @swagger
- * /lessons:
+ * /api/lessons:
  *   post:
  *     summary: Create a new lesson
  *     tags:
@@ -270,7 +270,7 @@
 
 /**
  * @swagger
- * /lessons/{id}:
+ * /api/lessons/{id}:
  *   put:
  *     summary: Update an existing lesson
  *     tags:
@@ -406,7 +406,7 @@
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- * /lessons/{id}:
+ * /api/lessons/{id}:
  *   delete:
  *     summary: Supprimer une leçon
  *     description: Permet de supprimer une leçon et son fichier associé, si l'utilisateur est le propriétaire.
