@@ -7,25 +7,33 @@ class Course extends Crud {
     super("courses");
   }
 
-  async getAllByProfessor(professorId, { year, month, week, day }) {
-    let query = `
-      SELECT 
-        c.*, 
-        s.name AS student_name, 
-        s.surname AS student_surname 
-      FROM ${this.tableName} c
-      LEFT JOIN students s ON c.student_id = s.id
-      WHERE c.professor_id = $1
-    `;
-    let params = [professorId];
+async getAllByProfessor(professorId, { year, month, week, day }) {
+  let query = `
+    SELECT 
+      c.*, 
+      s.name AS student_name, 
+      s.surname AS student_surname 
+    FROM ${this.tableName} c
+    LEFT JOIN students s ON c.student_id = s.id
+    WHERE c.professor_id = $1
+  `;
+  const params = [professorId];
 
+  if (year && month && day) {
+    // ✅ Formate correctement la date sans toISOString()
+    const paddedMonth = String(month).padStart(2, "0");
+    const paddedDay = String(day).padStart(2, "0");
+    const formattedDate = `${year}-${paddedMonth}-${paddedDay}`;
+
+    query += ` AND c.scheduled_at::DATE = $${params.length + 1}`;
+    params.push(formattedDate);
+  } else {
     if (year) {
       query += ` AND EXTRACT(YEAR FROM c.scheduled_at) = $${params.length + 1}`;
       params.push(year);
     }
     if (month) {
-      // Assurer que le mois est bien sous forme de 'MM'
-      const formattedMonth = month.length === 1 ? `0${month}` : month;
+      const formattedMonth = String(month).padStart(2, "0");
       query += ` AND TO_CHAR(c.scheduled_at, 'MM') = $${params.length + 1}`;
       params.push(formattedMonth);
     }
@@ -33,22 +41,20 @@ class Course extends Crud {
       query += ` AND EXTRACT(WEEK FROM c.scheduled_at) = $${params.length + 1}`;
       params.push(week);
     }
-    if (day) {
-      query += ` AND c.scheduled_at::DATE = $${params.length + 1}`;
-      params.push(day);
-    }
-
-    // Ajoute un ordre pour trier par scheduled_at
-    query += " ORDER BY c.scheduled_at ASC";
-
-    try {
-      const result = await pool.query(query, params);
-      return result.rows.map(convertKeysToCamel);
-    } catch (err) {
-      console.error("Erreur lors de l'exécution de la requête", err);
-      throw new Error("Échec de la requête à la base de données");
-    }
   }
+
+  query += " ORDER BY c.scheduled_at ASC";
+
+  try {
+    const result = await pool.query(query, params);
+    return result.rows.map(convertKeysToCamel);
+  } catch (err) {
+    console.error("Erreur lors de l'exécution de la requête", err);
+    throw new Error("Échec de la requête à la base de données");
+  }
+}
+
+
 
   async getNextCourses(professorId, limit) {
     const query = `

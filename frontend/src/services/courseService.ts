@@ -3,10 +3,12 @@ const backendUrl = import.meta.env.VITE_BACKEND;
 export const getCourses = async (month: number, year: number, day: number | null =null) => {
   try {
     let url = `${backendUrl}/api/course?year=${year}&month=${month}`;
+    
     if(day) url += `&day=${day}`
     const response = await fetch(url, {
       credentials: "include",
     });
+    console.log(url);
     const datas = await response.json();
     return datas;
   } catch (err) {

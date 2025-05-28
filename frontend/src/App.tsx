@@ -9,6 +9,7 @@ import Students from "./pages/Students";
 import StudentDetail from "./pages/StudentDetail";
 import Lesson from "./pages/Lesson";
 import LessonDetail from "./pages/LessonDetail";
+import CourseDetail from "./pages/CourseDetail";
 import PrivateRoutes from "./components/PrivateRoutes";
 
 function App() {
@@ -66,6 +67,14 @@ function App() {
               element={
                 <Layout>
                   <LessonDetail />
+                </Layout>
+              }
+            />
+            <Route
+              path="/courses"
+              element={
+                <Layout>
+                  <CourseDetail />
                 </Layout>
               }
             />

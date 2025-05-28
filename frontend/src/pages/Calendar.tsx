@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import CalendarDay from "../components/CalendarDay";
 import { getCourses } from "../services/getStats";
@@ -9,14 +10,14 @@ export default function Calendar() {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth()); // Index du mois (0 = Janvier)
   const [year, setYear] = useState(today.getFullYear());
-  const [courses, setCourses] = useState<CourseType[]>([])
+  const [courses, setCourses] = useState<CourseType[]>([]);
 
-useEffect(() => {
-  (async () => {
-    const fetchedCourses = await getCourses(month + 1, year)
-    setCourses(fetchedCourses)
-  })()
-}, [month])
+  useEffect(() => {
+    (async () => {
+      const fetchedCourses = await getCourses(month + 1, year);
+      setCourses(fetchedCourses);
+    })();
+  }, [month]);
   // Fonction pour aller au mois précédent
   const prevMonth = () => {
     setMonth((prev) => {
@@ -55,8 +56,8 @@ useEffect(() => {
     month: "long",
   });
 
-   // Fonction pour filtrer les cours pour un jour donné
-   const getCoursesForDay = (day: number) => {
+  // Fonction pour filtrer les cours pour un jour donné
+  const getCoursesForDay = (day: number) => {
     const dayStart = new Date(year, month, day, 0, 0, 0, 0).toISOString();
     const dayEnd = new Date(year, month, day, 23, 59, 59, 999).toISOString();
     return courses.filter(
@@ -117,7 +118,16 @@ useEffect(() => {
               isToday ? "border-2 border-indigo-500" : ""
             }`;
             const dayCourses = getCoursesForDay(day);
-            return <CalendarDay className={className} day={day} key={day} courses={dayCourses}/>;
+            return (
+              <Link to={`/courses?year=${year}&month=${month}&day=${day}`} key={day}>
+                <CalendarDay
+                  className={className}
+                  day={day}
+                  
+                  courses={dayCourses}
+                />
+              </Link>
+            );
           })}
         </div>
       </div>
