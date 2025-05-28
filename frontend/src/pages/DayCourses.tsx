@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getCourses } from "../services/courseService";
 import { CourseType } from "../types/CourseType";
-
-const CourseDetail = () => {
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import CourseListElement from "../components/CourseListElement";
+const DayCourses = () => {
   const [searchParams] = useSearchParams();
   const [courses, setCourses] = useState<CourseType[]>([]);
 
@@ -24,15 +26,24 @@ const CourseDetail = () => {
 
   return (
     <div>
-      <h2>Course Details</h2>
-      {courses.map((course, index) => (
-        <div key={index}>
-          <p>Nom étudiant : {course.studentName}</p>
-          <p>Prix : {course.price} €</p>
-        </div>
-      ))}
+      <div className="flex items-center space-x-4 mb-4">
+        <Link
+          to="/calendar"
+          className="flex items-center text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft size={20} className="mr-2" />
+          Retour au calendrier
+        </Link>
+      </div>
+      <ul className="space-y-2">
+        {courses.map((course) => (
+          <li key={course.id} >
+            <CourseListElement course={course} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default CourseDetail;
+export default DayCourses;

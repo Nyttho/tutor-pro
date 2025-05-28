@@ -122,8 +122,7 @@ export default function Calendar() {
               <Link to={`/courses?year=${year}&month=${month}&day=${day}`} key={day}>
                 <CalendarDay
                   className={className}
-                  day={day}
-                  
+                  day={day}  
                   courses={dayCourses}
                 />
               </Link>

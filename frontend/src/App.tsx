@@ -9,8 +9,8 @@ import Students from "./pages/Students";
 import StudentDetail from "./pages/StudentDetail";
 import Lesson from "./pages/Lesson";
 import LessonDetail from "./pages/LessonDetail";
-import CourseDetail from "./pages/CourseDetail";
 import PrivateRoutes from "./components/PrivateRoutes";
+import DayCourses from "./pages/DayCourses";
 
 function App() {
   return (
@@ -74,7 +74,7 @@ function App() {
               path="/courses"
               element={
                 <Layout>
-                  <CourseDetail />
+                  <DayCourses />
                 </Layout>
               }
             />
