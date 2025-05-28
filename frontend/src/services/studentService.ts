@@ -25,3 +25,21 @@ export const getStudentById = async (id: string | undefined) => {
     console.error("Error fetching student");
   }
 };
+
+export async function createStudent(data: any) {
+  const response = await fetch(`${backendUrl}/api/student`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include", 
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Erreur lors de la création de l'élève");
+  }
+
+  return response.json(); 
+}
