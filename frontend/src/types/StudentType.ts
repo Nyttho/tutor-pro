@@ -3,7 +3,12 @@ export interface StudentType {
   name: string;
   surname: string;
   address: string;
-  cityId: number;
+  city: {
+    country: string;
+    name: string;
+    postCode: string;
+  };
+  postCode: string;
   createdBy: number;
   isActive: boolean;
   email: string | null;

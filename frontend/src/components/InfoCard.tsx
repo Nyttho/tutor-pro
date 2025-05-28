@@ -1,4 +1,4 @@
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Home } from "lucide-react";
 import { StudentWithCourseCountAndPayments } from "../types/StudentType";
 
 interface InfoCardProps {
@@ -19,6 +19,12 @@ export default function InfoCard({ student }: InfoCardProps) {
           <Phone size={20} className="mr-3" />
           <a href={`tel:${student.tel}`} className="hover:text-indigo-600">
             {student.tel}
+          </a>
+        </div>
+        <div className="flex items-center text-gray-600">
+          <Home size={20} className="mr-3" />
+          <a href={`tel:${student.tel}`} className="hover:text-indigo-600">
+            {student.address} - {student.city.postCode} {student.city.name}
           </a>
         </div>
       </div>

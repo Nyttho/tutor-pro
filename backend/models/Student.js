@@ -10,13 +10,19 @@ class Student extends Crud {
     try {
       const result = await pool.query(
         `SELECT 
-          s.*, 
-          COUNT(c.id) AS total_courses, 
+          s.*,
+          json_build_object(
+            'country', ci.country,
+            'name', ci.name,
+            'postCode', ci.post_code
+          ) AS city,
+          COUNT(c.id) AS total_courses,
           COUNT(CASE WHEN c.status = 'pending' THEN 1 END) AS pending_courses
         FROM students s
+        LEFT JOIN cities ci ON ci.id = s.city_id
         LEFT JOIN courses c ON c.student_id = s.id
         WHERE s.id = $1
-        GROUP BY s.id`,
+        GROUP BY s.id, ci.id`,
         [id]
       );
 
@@ -44,13 +50,19 @@ class Student extends Crud {
     try {
       const result = await pool.query(
         `SELECT 
-        s.*, 
-        COUNT(c.id) AS total_courses, 
-        COUNT(CASE WHEN c.status = 'pending' THEN 1 END) AS pending_courses
+          s.*,
+          json_build_object(
+            'country', ci.country,
+            'name', ci.name,
+            'postCode', ci.post_code
+          ) AS city,
+          COUNT(c.id) AS total_courses,
+          COUNT(CASE WHEN c.status = 'pending' THEN 1 END) AS pending_courses
         FROM students s
+        LEFT JOIN cities ci ON ci.id = s.city_id
         LEFT JOIN courses c ON c.student_id = s.id
         WHERE s.created_by = $1
-        GROUP BY s.id;`,
+        GROUP BY s.id, ci.id`,
         [id]
       );
       return result.rows.map(convertKeysToCamel);
