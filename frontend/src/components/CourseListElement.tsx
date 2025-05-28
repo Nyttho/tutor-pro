@@ -4,14 +4,16 @@ import { useState } from "react";
 
 interface CourseListElementProps {
   course: CourseType;
+  onStatusChange?: () => void;
 }
-export default function CourseListElement({ course }: CourseListElementProps) {
+export default function CourseListElement({ course, onStatusChange }: CourseListElementProps) {
   const [status, setStatus] = useState(course.status);
 
   const handleToggle = async () => {
     try {
       const updated = await toggleCourseStatus(course.id);
       setStatus(updated.status);
+      if (onStatusChange) onStatusChange();
     } catch (err) {
       console.error("Failed update status", err);
     }
