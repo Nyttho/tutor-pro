@@ -26,14 +26,6 @@ export default function StudentCard({ student }: StudentCardProps) {
               </div>
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-            className="text-gray-400 hover:text-gray-600"
-          >
-            •••
-          </button>
         </div>
         <div className="mt-6 pt-6 border-t border-gray-100">
           <div className="grid grid-cols-2 gap-4 text-sm">
