@@ -4,7 +4,7 @@ import { StudentWithCourseCountAndPayments } from "../types/StudentType";
 import StudentCard from "../components/StudentCard";
 import { Plus } from "lucide-react";
 import Modal from "../components/ui/Modal";
-import StudentForm from "../components/forms/StudentForm"; // à créer ensuite
+import StudentForm from "../components/forms/StudentForm";
 
 export default function Students() {
   const [students, setStudents] = useState<StudentWithCourseCountAndPayments[]>([]);
@@ -25,7 +25,7 @@ export default function Students() {
         <h1 className="text-3xl font-bold text-gray-900">Élèves</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer"
         >
           <Plus size={20} />
           Ajouter un élève

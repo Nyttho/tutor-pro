@@ -130,7 +130,7 @@ export default function StudentForm({ onSuccess }: StudentFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded cursor-pointer"
       >
         {loading ? "Création en cours..." : "Créer l’élève"}
       </button>

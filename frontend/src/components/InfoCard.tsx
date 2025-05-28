@@ -23,9 +23,9 @@ export default function InfoCard({ student }: InfoCardProps) {
         </div>
         <div className="flex items-center text-gray-600">
           <Home size={20} className="mr-3" />
-          <a href={`tel:${student.tel}`} className="hover:text-indigo-600">
+          <p>
             {student.address} - {student.city.postCode} {student.city.name}
-          </a>
+          </p>
         </div>
       </div>
     </div>
