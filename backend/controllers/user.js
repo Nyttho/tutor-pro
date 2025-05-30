@@ -97,33 +97,46 @@ const updateUser = async (req, res) => {
     const tokenId = req.user.id;
     const isAdmin = req.user.admin;
 
-    const { admin, ...updateFields } = req.body;
+    const { admin, password, ...updateFields } = req.body;
 
-    //Verify if user in database
+    // Vérifier si l'utilisateur existe
     const existingUser = await User.getById(userId);
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    //Verify if user is trying to update himself, or if he is admin
+    // Vérifier que l'utilisateur modifie son propre compte ou qu'il est admin
     if (!isAdmin && userId !== tokenId) {
       return res
         .status(403)
         .json({ message: "You are not authorized to update this user" });
     }
 
-    //Verify if user is admin
+    // Empêcher un non-admin de changer son rôle
     if (!isAdmin && admin !== undefined) {
       return res.status(403).json({ message: "You can't change your role" });
     }
 
-    const fieldsToUpdate = isAdmin ? req.body : updateFields;
+    // Préparer les champs à mettre à jour
+    const fieldsToUpdate = isAdmin ? { ...req.body } : { ...updateFields };
+
+    // Gérer le password : si fourni et non vide, le hacher
+    if (password && password.trim() !== "") {
+      fieldsToUpdate.password = await bcrypt.hash(password, 10);
+    } else {
+      // Ne pas écraser le mot de passe si vide ou absent
+      delete fieldsToUpdate.password;
+    }
 
     const updatedUser = await User.update(userId, fieldsToUpdate);
 
-    const { password, ...user } = updatedUser;
+    // Supprimer le password de la réponse
+    const { password: pwd, ...userWithoutPassword } = updatedUser;
 
-    return res.status(200).json({ message: "User updated successfully", user });
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: userWithoutPassword,
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

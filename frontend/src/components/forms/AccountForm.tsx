@@ -23,25 +23,34 @@ export default function AccountForm({ onSuccess }: AccountFormProps) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!user) return;
 
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
+  setLoading(true);
+  setError(null);
+  setSuccess(null);
 
-    try {
-      const { user: updatedUser } = await updateUser(user.id, formData);
-      setSuccess("Compte mis à jour avec succès !");
-      onSuccess();
-      setUser(updatedUser);
-    } catch (err: any) {
-      setError(err?.message || "Erreur lors de la mise à jour.");
-    } finally {
-      setLoading(false);
+  try {
+    // Ne pas envoyer password si vide
+    const dataToSend: { name: string; email: string; password?: string } = {
+      name: formData.name,
+      email: formData.email,
+    };
+    if (formData.password.trim() !== "") {
+      dataToSend.password = formData.password;
     }
-  };
+
+    const { user: updatedUser } = await updateUser(user.id, dataToSend);
+    setSuccess("Compte mis à jour avec succès !");
+    setUser(updatedUser);
+    onSuccess()
+  } catch (err: any) {
+    setError(err?.message || "Erreur lors de la mise à jour.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDelete = async () => {
     if (!user) return;
