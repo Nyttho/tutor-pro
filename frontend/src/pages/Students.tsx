@@ -36,7 +36,7 @@ const filteredAndSortedStudents = students
         <div className="flex gap-4">
           <button
             onClick={() => setFilterLatePayments((prev) => !prev)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer ${
               filterLatePayments
                 ? "bg-red-100 text-red-700 border-red-300"
                 : "bg-white text-gray-700 border-gray-300"
@@ -48,7 +48,7 @@ const filteredAndSortedStudents = students
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer"
           >
             <Plus size={20} />
             Ajouter un élève
