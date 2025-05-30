@@ -18,6 +18,6 @@ export interface StudentType {
 }
 
 export interface StudentWithCourseCountAndPayments extends StudentType {
-  totalCourses: number;
-  pendingCourses: number; // Nombre de paiements en attente
+  totalCourses: string | number;
+  pendingCourses: string | number; // Nombre de paiements en attente
 }
