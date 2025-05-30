@@ -7,7 +7,7 @@ interface AccountFormProps {
 }
 
 export default function AccountForm({ onSuccess }: AccountFormProps) {
-  const { user, logout } = useAuth();
+  const { user, setUser, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -32,11 +32,12 @@ export default function AccountForm({ onSuccess }: AccountFormProps) {
     setSuccess(null);
 
     try {
-      await updateUser(user.id, formData);
+      const { user: updatedUser } = await updateUser(user.id, formData);
       setSuccess("Compte mis à jour avec succès !");
       onSuccess();
+      setUser(updatedUser);
     } catch (err: any) {
-      setError(err.message || "Erreur lors de la mise à jour.");
+      setError(err?.message || "Erreur lors de la mise à jour.");
     } finally {
       setLoading(false);
     }
