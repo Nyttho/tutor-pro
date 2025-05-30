@@ -5,7 +5,7 @@ import { User } from "../types/UserType";
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -15,15 +15,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const backendUrl = import.meta.env.VITE_BACKEND
+  const backendUrl = import.meta.env.VITE_BACKEND;
 
   useEffect(() => {
-    // Simulate checking for existing session
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-    setIsLoading(false);
+    const checkSession = async () => {
+      try {
+        const response = await fetch(`${backendUrl}/api/auth/check-session`, {
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("Erreur lors de la vérification de session :", err);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -31,7 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await fetch(`${backendUrl}/api/auth/login`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -43,22 +58,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Erreur de connexion");
-    }
+      }
 
-      const datas = await response.json();
-      setUser(datas.user);
-   
-      localStorage.setItem("user", JSON.stringify(datas.user));
+      const data = await response.json();
+      setUser(data.user);
       navigate("/");
     } catch (err) {
       console.error("Erreur lors de la connexion:", err);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/login");
+  const logout = async () => {
+    try {
+      await fetch(`${backendUrl}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Erreur lors de la déconnexion :", err);
+    } finally {
+      setUser(null);
+      navigate("/login");
+    }
   };
 
   return (

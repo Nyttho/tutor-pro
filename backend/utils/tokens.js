@@ -5,7 +5,7 @@ const ACCESS_JWT_EXPIRATION = "1h";
 
 export const generateAccessToken = (user) => {
   return jwt.sign(
-    { id: user.id, name: user.name, admin: user.isAdmin },
+    { id: user.id, name: user.name, admin: user.isAdmin, email: user.email},
     JWT_SECRET,
     {
       expiresIn: ACCESS_JWT_EXPIRATION,

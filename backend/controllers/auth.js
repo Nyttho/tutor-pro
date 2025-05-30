@@ -5,7 +5,6 @@ import { generateAccessToken } from "../utils/tokens.js";
 const auth = async (req, res) => {
   try {
     const { email, password1 } = req.body;
-
     //check if user in bdd
     const user = await User.getByEmail(email);
     if (!user) {
@@ -30,7 +29,6 @@ const auth = async (req, res) => {
     });
 
     const { password, ...cleanedUser } = user;
-
     return res
       .status(200)
       .json({ message: "Authentication successfull", user: cleanedUser });
@@ -39,7 +37,7 @@ const auth = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {
+const logout = async (req, res) => {
   try {
     res.clearCookie("accessToken", {
       httpOnly: true,
@@ -53,6 +51,32 @@ export const logout = async (req, res) => {
   }
 };
 
-const authController = { auth, logout };
+const checkSession = async (req, res) => {
+  try {
+    const userId = req.user.id;  // depuis le JWT
+
+    // Récupérer l'utilisateur complet en base
+    const user = await User.getById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Préparer l'objet complet à envoyer
+    const userData = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      cityId: user.cityId,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+    return res.status(200).json({ user: userData });
+  } catch (err) {
+    return res.status(401).json({ error: err.message });
+  }
+};
+
+const authController = { auth, logout, checkSession };
 
 export default authController;

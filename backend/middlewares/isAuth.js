@@ -16,7 +16,6 @@ const isAuth = (req, res, next) => {
     // Attach the verified user to the request object
     req.user = user;
 
-    // Generate a fresh access token to extend session duration
     const newToken = generateAccessToken(user);
 
     // Set the new token as an HTTP-only cookie

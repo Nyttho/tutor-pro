@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Subscribe from "./pages/Subscribe";
 import Dashboard from "./pages/Dashboard";
+import Account from "./pages/Account";
 import Calendar from "./pages/Calendar";
 import Students from "./pages/Students";
 import StudentDetail from "./pages/StudentDetail";
@@ -27,6 +28,14 @@ function App() {
               element={
                 <Layout>
                   <Dashboard />
+                </Layout>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <Layout>
+                  <Account />
                 </Layout>
               }
             />

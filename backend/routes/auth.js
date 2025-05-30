@@ -5,6 +5,7 @@ import isAuth from "../middlewares/isAuth.js"
 const authRouter = Router();
 
 authRouter.post("/login", authController.auth);
-authRouter.post("/logout",isAuth, authController.logout )
+authRouter.post("/logout",isAuth, authController.logout);
+authRouter.get("/check-session", isAuth, authController.checkSession)
 
 export default authRouter;
