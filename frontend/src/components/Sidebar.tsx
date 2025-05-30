@@ -10,10 +10,13 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import MenuItem from "./ui/MenuItem";
+import Modal from "./ui/Modal";
+import AccountForm from "./forms/AccountForm";
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+
 
   const menuItems = [
     { icon: LayoutIcon, text: "Tableau de bord", path: "/" },
@@ -56,17 +59,20 @@ export default function Sidebar() {
 
 // Extraire la partie réutilisable dans un composant interne
 function SidebarContent({ user, logout, menuItems }: any) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
       <div className="mb-8">
         <h1 className="text-2xl font-bold">TutorPro</h1>
       </div>
-      <div className="mb-8 flex items-center space-x-3 p-3 bg-indigo-700/50 rounded-lg">
-        <div>
-          <div className="font-medium">{user?.name}</div>
-          <div className="text-sm text-indigo-200">{user?.email}</div>
-        </div>
+
+      <div onClick={() => setIsModalOpen(true)} className="mb-8 flex items-center space-x-3 p-3 bg-indigo-700/50 rounded-lg cursor-pointer">
+          <div>
+            <div className="font-medium">{user?.name}</div>
+            <div className="text-sm text-indigo-200">{user?.email}</div>
+          </div>
       </div>
+
       <nav className="flex-1">
         {menuItems.map((item: any) => (
           <MenuItem
@@ -84,6 +90,17 @@ function SidebarContent({ user, logout, menuItems }: any) {
         <LogOut size={20} />
         <span>Déconnexion</span>
       </button>
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              title="Modifier mon compte"
+            >
+              <AccountForm
+                onSuccess={() => {
+                  setIsModalOpen(false);
+                }}
+              />
+            </Modal>
     </>
   );
 }
