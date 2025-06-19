@@ -12,12 +12,17 @@ export default function Subscribe() {
   const [countryName, setCountryName] = useState("");
   const [cityName, setCityName] = useState("");
   const [postCode, setPostCode] = useState("");
+  const [acceptedPolicy, setAcceptedPolicy] = useState(false);
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const { login } = useAuth();
 
-  // Vérifie si les mots de passe sont identiques
+  useEffect(() => {
+    setError("");
+  }, [password, confirmPassword, acceptedPolicy]);
+
   const isPasswordIdentical = (pass1: string, pass2: string) => {
     if (pass1 !== pass2) {
       setError("Les mots de passe doivent être identiques");
@@ -25,11 +30,6 @@ export default function Subscribe() {
     }
     return true;
   };
-
-  // Supprime l'erreur quand l'utilisateur modifie ses mots de passe
-  useEffect(() => {
-    setError("");
-  }, [password, confirmPassword]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,19 +41,28 @@ export default function Subscribe() {
       return;
     }
 
+    if (!acceptedPolicy) {
+      setError("Vous devez accepter la politique de confidentialité");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          countryName,
-          cityName,
-          postCode,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND}/api/users`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            countryName,
+            cityName,
+            postCode,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -62,7 +71,11 @@ export default function Subscribe() {
 
       await login(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Une erreur inattendue s'est produite");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Une erreur inattendue s'est produite"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -75,24 +88,99 @@ export default function Subscribe() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             TutorPro
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">Créez un compte</p>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Créez un compte
+          </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div
+              className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
               {error}
             </div>
           )}
 
           <div className="rounded-md shadow-sm -space-y-px">
-            <FormInput name="name" type="text" isRequired value={name} onChange={setName} placeholder="Nom" />
-            <FormInput name="email" type="email" isRequired value={email} onChange={setEmail} placeholder="Email" />
-            <FormInput name="password" type="password" isRequired value={password} onChange={setPassword} placeholder="Mot de passe" />
-            <FormInput name="confirmPassword" type="password" isRequired value={confirmPassword} onChange={setConfirmPassword} placeholder="Confirmez le mot de passe" />
-            <FormInput name="countryName" type="text" isRequired value={countryName} onChange={setCountryName} placeholder="Pays" />
-            <FormInput name="cityName" type="text" isRequired value={cityName} onChange={setCityName} placeholder="Ville" />
-            <FormInput name="postCode" type="text" isRequired value={postCode} onChange={setPostCode} placeholder="Code Postal" />
+            <FormInput
+              name="name"
+              type="text"
+              isRequired
+              value={name}
+              onChange={setName}
+              placeholder="Nom"
+            />
+            <FormInput
+              name="email"
+              type="email"
+              isRequired
+              value={email}
+              onChange={setEmail}
+              placeholder="Email"
+            />
+            <FormInput
+              name="password"
+              type="password"
+              isRequired
+              value={password}
+              onChange={setPassword}
+              placeholder="Mot de passe"
+            />
+            <FormInput
+              name="confirmPassword"
+              type="password"
+              isRequired
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              placeholder="Confirmez le mot de passe"
+            />
+            <FormInput
+              name="countryName"
+              type="text"
+              isRequired
+              value={countryName}
+              onChange={setCountryName}
+              placeholder="Pays"
+            />
+            <FormInput
+              name="cityName"
+              type="text"
+              isRequired
+              value={cityName}
+              onChange={setCityName}
+              placeholder="Ville"
+            />
+            <FormInput
+              name="postCode"
+              type="text"
+              isRequired
+              value={postCode}
+              onChange={setPostCode}
+              placeholder="Code Postal"
+            />
+          </div>
+
+          <div className="flex items-start gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              id="policy"
+              checked={acceptedPolicy}
+              onChange={(e) => setAcceptedPolicy(e.target.checked)}
+              className="mt-1"
+              required
+            />
+            <label htmlFor="policy">
+              J’ai lu et j’accepte la{" "}
+              <Link
+                to="/politique-confidentialite"
+                className="underline text-indigo-500 hover:text-indigo-700"
+              >
+                politique de confidentialité
+              </Link>
+              .
+            </label>
           </div>
 
           <div>
@@ -102,7 +190,10 @@ export default function Subscribe() {
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <UserPlus className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+                <UserPlus
+                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                  aria-hidden="true"
+                />
               </span>
               {isLoading ? "Inscription en cours..." : "S'inscrire"}
             </button>

@@ -11,6 +11,7 @@ import Lesson from "./pages/Lesson";
 import LessonDetail from "./pages/LessonDetail";
 import PrivateRoutes from "./components/PrivateRoutes";
 import DayCourses from "./pages/DayCourses";
+import PrivacyPolicy from "./pages/PrivatePolicy";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/subscribe" element={<Subscribe />} />
+          <Route path="/private-policy" element={<PrivacyPolicy />} />
 
           {/* routes protégées */}
           <Route element={<PrivateRoutes />}>

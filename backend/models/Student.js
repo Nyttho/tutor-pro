@@ -28,8 +28,7 @@ class Student extends Crud {
 
       return result.rows[0] ? convertKeysToCamel(result.rows[0]) : null;
     } catch (err) {
-      console.error("Database error:", err); // Log l'erreur pour le debug
-      throw new Error("Error while fetching student data"); // Lève une erreur propre
+      throw new Error("Error while fetching student data");
     }
   }
 

@@ -83,6 +83,16 @@ export default function Login() {
               S'inscrire
             </Link>
           </p>
+          <p className="text-center text-xs text-gray-500 mt-4">
+            En vous connectant, vous acceptez notre{" "}
+            <Link
+              to="/private-policy"
+              className="underline text-indigo-500 hover:text-indigo-700"
+            >
+              politique de confidentialité
+            </Link>
+            .
+          </p>
         </form>
       </div>
     </div>

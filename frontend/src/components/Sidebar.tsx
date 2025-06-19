@@ -17,7 +17,6 @@ export default function Sidebar() {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
-
   const menuItems = [
     { icon: LayoutIcon, text: "Tableau de bord", path: "/" },
     { icon: Calendar, text: "Calendrier", path: "/calendar" },
@@ -43,10 +42,7 @@ export default function Sidebar() {
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden">
           <div className="h-full w-64 bg-indigo-800 text-white p-4 flex flex-col">
-            <button
-              className="self-end mb-4"
-              onClick={() => setIsOpen(false)}
-            >
+            <button className="self-end mb-4" onClick={() => setIsOpen(false)}>
               <CloseIcon size={24} />
             </button>
             <SidebarContent user={user} logout={logout} menuItems={menuItems} />
@@ -59,18 +55,21 @@ export default function Sidebar() {
 
 // Extraire la partie réutilisable dans un composant interne
 function SidebarContent({ user, logout, menuItems }: any) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
       <div className="mb-8">
         <h1 className="text-2xl font-bold">TutorPro</h1>
       </div>
 
-      <div onClick={() => setIsModalOpen(true)} className="mb-8 flex items-center space-x-3 p-3 bg-indigo-700/50 rounded-lg cursor-pointer">
-          <div>
-            <div className="font-medium">{user?.name}</div>
-            <div className="text-sm text-indigo-200">{user?.email}</div>
-          </div>
+      <div
+        onClick={() => setIsModalOpen(true)}
+        className="mb-8 flex items-center space-x-3 p-3 bg-indigo-700/50 rounded-lg cursor-pointer"
+      >
+        <div>
+          <div className="font-medium">{user?.name}</div>
+          <div className="text-sm text-indigo-200">{user?.email}</div>
+        </div>
       </div>
 
       <nav className="flex-1">
@@ -83,6 +82,15 @@ function SidebarContent({ user, logout, menuItems }: any) {
           />
         ))}
       </nav>
+      <div className="mb-4">
+        <a
+          href="/private-policy"
+          className="text-sm text-indigo-200 hover:text-white underline"
+        >
+          Politique de confidentialité
+        </a>
+      </div>
+
       <button
         onClick={logout}
         className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-700/50 transition-colors mt-auto"
@@ -90,17 +98,17 @@ function SidebarContent({ user, logout, menuItems }: any) {
         <LogOut size={20} />
         <span>Déconnexion</span>
       </button>
-            <Modal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              title="Modifier mon compte"
-            >
-              <AccountForm
-                onSuccess={() => {
-                  setIsModalOpen(false);
-                }}
-              />
-            </Modal>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Modifier mon compte"
+      >
+        <AccountForm
+          onSuccess={() => {
+            setIsModalOpen(false);
+          }}
+        />
+      </Modal>
     </>
   );
 }

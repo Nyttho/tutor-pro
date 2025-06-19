@@ -33,7 +33,7 @@ export async function createStudent(data: any) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-    credentials: "include", 
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -41,5 +41,5 @@ export async function createStudent(data: any) {
     throw new Error(errorData.error || "Erreur lors de la création de l'élève");
   }
 
-  return response.json(); 
+  return response.json();
 }
