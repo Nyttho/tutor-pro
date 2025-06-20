@@ -60,7 +60,7 @@
  *                       type: string
  *                       format: date-time
  *                       example: "2025-02-10T17:00:56.529Z"
- *       400:
+ *       401:
  *         description: Invalid credentials (wrong email or password).
  *         content:
  *           application/json:
