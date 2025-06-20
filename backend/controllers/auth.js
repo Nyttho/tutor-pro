@@ -8,13 +8,13 @@ const auth = async (req, res) => {
     //check if user in bdd
     const user = await User.getByEmail(email);
     if (!user) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     //check password
     const isPasswordValid = await bcryptjs.compare(password1, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const accessToken = generateAccessToken(user);
